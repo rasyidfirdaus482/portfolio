@@ -1,0 +1,118 @@
+.hero {
+    padding: 6rem 0 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 80vh;
+    position: relative;
+}
+
+.content {
+    max-width: 800px;
+    position: relative;
+    z-index: 1;
+}
+
+.greeting {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #3b82f6;
+    margin-bottom: 1rem;
+    letter-spacing: 0.05em;
+}
+
+.title {
+    font-size: clamp(2rem, 6vw, 4rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.04em;
+    color: var(--foreground);
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+.highlight {
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.role {
+    font-size: clamp(1.1rem, 3vw, 1.75rem);
+    font-weight: 600;
+    color: var(--foreground);
+    opacity: 0.75;
+    margin-bottom: 1.5rem;
+    min-height: 2rem;
+}
+
+.subtitle {
+    font-size: clamp(0.95rem, 2vw, 1.15rem);
+    line-height: 1.7;
+    opacity: 0.6;
+    margin-bottom: 2.5rem;
+    max-width: 560px;
+}
+
+.actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.marqueeFullWidth {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-top: 3rem;
+}
+
+/* ---- Mobile ---- */
+@media (max-width: 768px) {
+    .hero {
+        padding: 2.5rem 0 1.5rem;
+        min-height: auto;
+        align-items: center;
+        text-align: center;
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .greeting {
+        font-size: 0.85rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .role {
+        min-height: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .subtitle {
+        margin-bottom: 1.5rem;
+    }
+
+    .actions {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+        width: 100%;
+    }
+
+    .actions > a,
+    .actions > a > button {
+        width: 100%;
+        font-size: 0.875rem;
+        padding: 0.65rem 1.25rem;
+    }
+
+    .marqueeFullWidth {
+        margin-top: 2rem;
+    }
+}

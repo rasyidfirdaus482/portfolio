@@ -1,0 +1,53 @@
+.mdxContent {
+    color: var(--foreground);
+    line-height: 1.7;
+    font-size: 1.125rem;
+}
+
+.mdxContent h1,
+.mdxContent h2,
+.mdxContent h3,
+.mdxContent h4 {
+    color: var(--foreground);
+    font-weight: 700;
+    margin-top: 2em;
+    margin-bottom: 1em;
+}
+
+.mdxContent p {
+    margin-bottom: 1.25em;
+    opacity: 0.9;
+}
+
+.mdxContent a {
+    color: #3b82f6;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.mdxContent pre {
+    background-color: #1a1a1a;
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mdxContent code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    background-color: rgba(0, 0, 0, 0.05);
+    padding: 0.2em 0.4em;
+    border-radius: 4px;
+}
+
+:global(.dark) .mdxContent code {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.mdxContent pre code {
+    background-color: transparent;
+    color: #e5e7eb;
+    padding: 0;
+}

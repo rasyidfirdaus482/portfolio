@@ -1,0 +1,29 @@
+.copyButton {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.6rem;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background-color: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.75rem;
+    font-family: inherit;
+    cursor: pointer;
+    opacity: 0;
+    transition: all 0.2s ease;
+}
+
+/* Show on hover of parent pre block */
+:global(pre):hover .copyButton {
+    opacity: 1;
+}
+
+.copyButton:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.25);
+}

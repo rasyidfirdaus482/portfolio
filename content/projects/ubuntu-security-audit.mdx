@@ -1,0 +1,32 @@
+---
+title: "Infrastructure Security Audit & Hardening"
+date: "2024-03-10"
+excerpt: "A comprehensive penetration testing and server hardening project for a mid-tier enterprise."
+technologies: ["Ubuntu Server", "Nmap", "Metasploit", "Bash Scripting", "Firewall"]
+category: "Cybersecurity"
+---
+
+# Infrastructure Security Audit & Hardening
+
+*Catatan: Data spesifik target dalam studi kasus ini telah disamarkan (sanitized) demi alasan kerahasiaan (NDA).*
+
+## 1. Latar Belakang & Masalah (Problem)
+Perusahaan X mengalami anomali trafik pada jaringan internal mereka dan mencurigai adanya celah keamanan pada konfigurasi server *backend* lama mereka. Tujuannya adalah untuk menemukan vektor serangan sebelum dieksploitasi oleh pihak luar, lalu melakukan remediasi (pengerasan / *hardening*).
+
+## 2. Metodologi (Action)
+Saya melakukan audit keamanan berlapis menggunakan metodologi *Black Box* dan *White Box* testing:
+
+1. **Reconnaissance & Vulnerability Scanning**: Menggunakan `Nmap` dan `OpenVAS` untuk memetakan topologi jaringan dan port yang terbuka tanpa otorisasi.
+2. **Exploitation (Ethical Hacking)**: Memverifikasi *vulnerabilities* kritis (seperti RCE pada versi *software* kadaluarsa) menggunakan `Metasploit Framework`.
+3. **Server Hardening (Ubuntu)**:
+   - Menonaktifkan root login dan mengganti port SSH default.
+   - Mengimplementasikan `UFW` (Uncomplicated Firewall) dengan *strict rule*.
+   - Menginisialisasi *system logging* terpusat dan *Intrusion Detection System* (IDS) dasar.
+
+## 3. Hasil & Dampak (Result)
+- **3 Celah Kritis (Critical)** ditutup secara permanen (termasuk potensi akses shell *unauthenticated*).
+- Menurunkan *attack surface* server sebesar 80% berdasarkan skor CVSS ulang.
+- Menyusun dokumen *Standar Operasional Presedur (SOP)* untuk pengamanan *deployment* server Ubuntu baru di masa mendatang.
+
+---
+*Proyek ini mendemonstrasikan kemampuan saya dalam merancang arsitektur keamanan yang kokoh di level server.*

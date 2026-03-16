@@ -1,0 +1,117 @@
+.footer {
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    padding: 2.5rem 0 1.5rem;
+    margin-top: auto;
+}
+
+:global(.dark) .footer {
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* === Grid layout === */
+.grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* === Brand column === */
+.logo {
+    font-weight: 700;
+    font-size: 1.2rem;
+    letter-spacing: -0.025em;
+    text-decoration: none;
+    color: var(--foreground);
+}
+
+.tagline {
+    font-size: 0.85rem;
+    opacity: 0.5;
+    line-height: 1.5;
+    max-width: 280px;
+    margin-top: 0.5rem;
+}
+
+/* === Columns === */
+.column {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.columnTitle {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.4;
+    margin-bottom: 0.25rem;
+}
+
+.footerLink {
+    font-size: 0.875rem;
+    color: var(--foreground);
+    text-decoration: none;
+    opacity: 0.6;
+    transition: opacity 0.2s ease, color 0.2s ease;
+}
+
+.footerLink:hover {
+    opacity: 1;
+    color: #3b82f6;
+}
+
+/* === Social links with icons === */
+.socialLink {
+    font-size: 0.875rem;
+    color: var(--foreground);
+    text-decoration: none;
+    opacity: 0.6;
+    transition: opacity 0.2s ease, color 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.socialLink:hover {
+    opacity: 1;
+    color: #3b82f6;
+}
+
+/* === Bottom bar === */
+.bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+:global(.dark) .bottom {
+    border-color: rgba(255, 255, 255, 0.04);
+}
+
+.copyright {
+    font-size: 0.8rem;
+    opacity: 0.4;
+}
+
+.builtWith {
+    font-size: 0.8rem;
+    opacity: 0.35;
+}
+
+/* === Mobile === */
+@media (max-width: 768px) {
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .bottom {
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+    }
+}

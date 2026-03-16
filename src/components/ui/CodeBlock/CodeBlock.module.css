@@ -1,0 +1,7 @@
+.codeBlockWrapper {
+    position: relative;
+}
+
+.codeBlockWrapper pre {
+    margin: 0;
+}

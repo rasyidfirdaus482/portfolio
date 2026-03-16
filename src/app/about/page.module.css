@@ -1,0 +1,64 @@
+.container {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+}
+
+.content {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.title {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 2rem;
+    letter-spacing: -0.025em;
+}
+
+.prose {
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: var(--foreground);
+}
+
+.prose p {
+    margin-bottom: 1.5rem;
+    opacity: 0.9;
+}
+
+.prose h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+}
+
+.prose a {
+    color: #3b82f6;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.pillarSection {
+    margin-top: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.pillarSection h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: var(--foreground);
+    opacity: 0.9;
+}
+
+.skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.skillBadge {
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+}

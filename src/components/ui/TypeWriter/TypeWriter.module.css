@@ -1,0 +1,16 @@
+.typewriter {
+    display: inline;
+}
+
+.cursor {
+    display: inline-block;
+    margin-left: 2px;
+    font-weight: 100;
+    animation: blink 1s step-end infinite;
+    color: #3b82f6;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
