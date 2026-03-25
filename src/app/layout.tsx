@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Navbar } from "@/components/layout/Navbar/Navbar";
 import { Footer } from "@/components/layout/Footer/Footer";
 import { PageTransition } from "@/components/layout/PageTransition/PageTransition";
+import { BackToTop } from "@/components/ui/BackToTop/BackToTop";
+import { GridBackground } from "@/components/ui/GridBackground/GridBackground";
 import "./globals.css";
 import "@/styles/prism.css";
 
@@ -19,13 +21,13 @@ const geistMono = Geist_Mono({
 import { Providers } from "@/components/layout/Providers/Providers";
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://your-portfolio-domain.com'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://rasyidfirdaus.vercel.app'),
   title: "Rasyid Firdaus Harmaini",
   description: "Multidisciplinary Engineer: Bridging Web Development, Data Science, and Infrastructure Security.",
   openGraph: {
     title: "Rasyid Firdaus Harmaini",
     description: "Multidisciplinary Engineer: Bridging Web Development, Data Science, and Infrastructure Security.",
-    url: 'https://your-portfolio-domain.com',
+    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://rasyidfirdaus.vercel.app',
     siteName: 'Rasyid Firdaus Harmaini Portfolio',
     images: [
       {
@@ -45,16 +47,13 @@ export const metadata: Metadata = {
   },
 };
 
-import { BackToTop } from "@/components/ui/BackToTop/BackToTop";
-import { GridBackground } from "@/components/ui/GridBackground/GridBackground";
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <script
           type="application/ld+json"
@@ -63,7 +62,7 @@ export default function RootLayout({
               '@context': 'https://schema.org',
               '@type': 'Person',
               name: 'Rasyid Firdaus Harmaini',
-              url: 'https://your-portfolio-domain.com',
+              url: process.env.NEXT_PUBLIC_SITE_URL || 'https://rasyidfirdaus.vercel.app',
               jobTitle: 'Multidisciplinary Engineer',
               knowsAbout: ['Web Development', 'Data Science', 'Machine Learning', 'Cybersecurity', 'Networking'],
             }),

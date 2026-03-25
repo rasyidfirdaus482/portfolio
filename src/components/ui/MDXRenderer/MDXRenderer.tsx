@@ -3,6 +3,7 @@ import { MDXRemote } from 'next-mdx-remote/rsc';
 import rehypePrism from 'rehype-prism-plus';
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+import rehypeRaw from 'rehype-raw';
 import { Button } from '../Button/Button';
 import { Card } from '../Card/Card';
 import { Badge } from '../Badge/Badge';
@@ -30,6 +31,7 @@ export function MDXRenderer({ source }: { source: string }) {
   const options = {
     mdxOptions: {
       rehypePlugins: [
+        [rehypeRaw, { passThrough: ['mdxjsEsm', 'mdxJsxFlowElement', 'mdxJsxTextElement', 'mdxTextExpression', 'mdxFlowExpression'] }],
         rehypeSlug,
         [rehypeAutolinkHeadings, { behavior: 'wrap' }],
         [rehypePrism as any, { ignoreMissing: true }],

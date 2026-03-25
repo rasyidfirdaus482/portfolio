@@ -12,7 +12,7 @@ export const Image = ({ src, alt, className = '', ...props }: ImageProps) => {
   const [isLoading, setLoading] = useState(true);
 
   return (
-    <div className={`${styles.imageWrapper} ${className}`}>
+    <span className={`${styles.imageWrapper} ${className}`}>
       <NextImage
         src={src}
         alt={alt}
@@ -22,6 +22,6 @@ export const Image = ({ src, alt, className = '', ...props }: ImageProps) => {
         onLoad={() => setLoading(false)}
         {...props}
       />
-    </div>
+    </span>
   );
 };

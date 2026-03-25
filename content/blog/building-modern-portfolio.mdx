@@ -1,0 +1,87 @@
+---
+title: "Building a Modern Portfolio with Next.js"
+date: "2026-03-17"
+excerpt: "A deep dive into how I built this portfolio using Next.js App Router, CSS Modules, and modern web development best practices."
+category: "Web Development"
+---
+
+# Building a Modern Portfolio with Next.js
+
+After months of planning and iterating, I finally launched my personal portfolio. In this post, I'll walk you through the technology choices, design decisions, and lessons learned along the way.
+
+## Why Next.js App Router?
+
+The App Router in Next.js 14+ introduces a new paradigm for building React applications. It provides:
+
+- **Server Components** by default — faster initial page loads
+- **File-based routing** with layouts and nested routes
+- **Static Site Generation (SSG)** for blazing-fast performance
+- **Built-in SEO** optimization with the Metadata API
+
+```typescript
+// Example: Generating static params for blog posts
+export async function generateStaticParams() {
+  const posts = getAllPosts('blog');
+  return posts.map((post) => ({ slug: post.slug }));
+}
+```
+
+## The Design Philosophy
+
+I wanted a design that feels **premium** without being over-the-top. The key principles were:
+
+1. **Clean typography** — Using the Geist font family for a modern feel
+2. **Subtle animations** — Fade-in effects and smooth transitions
+3. **Dark mode first** — Because developers love dark mode
+4. **Responsive by default** — Mobile experience is just as important
+
+Here's a visual breakdown of the grid background effect with spotlight that follows the cursor:
+
+![Grid Background Spotlight Effect](https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&h=450&fit=crop)
+
+The spotlight effect is achieved using CSS `radial-gradient` masks that follow the mouse pointer position, creating an interactive and immersive experience.
+
+## Tech Stack Deep Dive
+
+The full tech stack includes:
+
+| Technology | Purpose |
+|-----------|---------|
+| **Next.js 16** | Framework & SSG |
+| **TypeScript** | Type safety |
+| **CSS Modules** | Scoped styling |
+| **MDX** | Blog content |
+| **Supabase** | CMS backend |
+
+## Adding Dynamic Content
+
+One of the most exciting features is the built-in CMS. Instead of editing Markdown files manually, I built an admin dashboard that lets me create and manage posts directly from the browser.
+
+Watch this excellent talk by Vercel's CEO about the future of web development:
+
+<iframe width="100%" height="400" src="https://www.youtube.com/embed/gfU1iZnjRZM" frameBorder="0" allowFullScreen></iframe>
+
+## Performance Results
+
+By using static generation and optimized fonts, the portfolio scores **100/100** on Lighthouse for Performance, Accessibility, Best Practices, and SEO.
+
+Key optimizations:
+- **Image optimization** with Next.js `<Image />` component
+- **Font subsetting** to reduce payload size
+- **CSS Modules** to eliminate unused styles
+- **Incremental Static Regeneration** for dynamic content
+
+## What's Next?
+
+Some features I'm planning to add:
+
+- 📊 **Analytics dashboard** — Track page views and engagement
+- 🔍 **Full-text search** — Search across all blog posts
+- 💬 **Comments system** — Allow readers to leave feedback
+- 🎨 **Theme customization** — Multiple color schemes
+
+If you're interested in building something similar, feel free to check out the [source code](https://github.com/rasyidfirdaus482/portfolio) and give it a star! ⭐
+
+---
+
+*Thanks for reading! Follow me on GitHub for more updates.*

@@ -1,12 +1,14 @@
-import { getAllPosts } from "@/lib/mdx";
+import { getAllPostsWithSupabase } from "@/lib/posts";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs/Breadcrumbs";
 import { Container } from "@/components/layout/Container/Container";
 import { FadeIn } from "@/components/ui/FadeIn/FadeIn";
 import { ProjectList } from "@/components/ui/ProjectList/ProjectList";
 import styles from "./page.module.css";
 
-export default function ProjectsIndex() {
-  const projects = getAllPosts('projects');
+export const revalidate = 60;
+
+export default async function ProjectsIndex() {
+  const projects = await getAllPostsWithSupabase('projects');
 
   return (
     <Container className={styles.container}>

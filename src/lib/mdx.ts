@@ -5,13 +5,15 @@ import readingTime from 'reading-time';
 
 const contentDirectory = path.join(process.cwd(), 'content');
 
-export function getPostSlugs(type: 'blog' | 'projects') {
+export type ContentType = 'blog' | 'projects' | 'certificates';
+
+export function getPostSlugs(type: ContentType) {
     const dir = path.join(contentDirectory, type);
     if (!fs.existsSync(dir)) return [];
     return fs.readdirSync(dir).filter(file => file.endsWith('.mdx') || file.endsWith('.md'));
 }
 
-export function getPostBySlug(type: 'blog' | 'projects', slug: string) {
+export function getPostBySlug(type: ContentType, slug: string) {
     const realSlug = slug.replace(/\.mdx?$/, '');
 
     let fullPath = path.join(contentDirectory, type, `${realSlug}.mdx`);
@@ -30,7 +32,7 @@ export function getPostBySlug(type: 'blog' | 'projects', slug: string) {
     return { slug: realSlug, meta: { ...data, readingTime: timeToRead } as Record<string, any>, content };
 }
 
-export function getAllPosts(type: 'blog' | 'projects') {
+export function getAllPosts(type: ContentType) {
     const slugs = getPostSlugs(type);
     const posts = slugs
         .map((slug) => getPostBySlug(type, slug))

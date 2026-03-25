@@ -1,19 +1,25 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import styles from './BackToTop.module.css';
 
 export const BackToTop = () => {
+    const pathname = usePathname();
     const [isVisible, setIsVisible] = useState(false);
+    const isAdmin = pathname?.startsWith('/admin');
 
     useEffect(() => {
+        if (isAdmin) return;
         const toggleVisibility = () => {
             setIsVisible(window.scrollY > 400);
         };
 
         window.addEventListener('scroll', toggleVisibility, { passive: true });
         return () => window.removeEventListener('scroll', toggleVisibility);
-    }, []);
+    }, [isAdmin]);
+
+    if (isAdmin) return null;
 
     const scrollToTop = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });

@@ -1,9 +1,11 @@
 'use client';
 
 import { useEffect, useRef, useCallback } from 'react';
+import { usePathname } from 'next/navigation';
 import styles from './GridBackground.module.css';
 
 export const GridBackground = () => {
+    const pathname = usePathname();
     const gridRef = useRef<HTMLDivElement>(null);
     const mouseRef = useRef({ x: -1000, y: -1000 });
     const scrollRef = useRef(0);
@@ -100,6 +102,8 @@ export const GridBackground = () => {
             cancelAnimationFrame(rafRef.current);
         };
     }, [updateMask, hideMask]);
+
+    if (pathname?.startsWith('/admin')) return null;
 
     return (
         <div className={styles.gridWrapper} aria-hidden="true">

@@ -41,3 +41,32 @@ body {
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 }
+
+/* === EasyMDE Overrides === */
+.editor-toolbar button {
+  color: #64748b !important; /* Make icons visible (slate-500) */
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.editor-toolbar button:hover,
+.editor-toolbar button.active {
+  color: #0f172a !important; /* Darker slate on hover/active */
+  background-color: #f1f5f9 !important;
+}
+
+.editor-toolbar i.separator {
+  border-left: 1px solid #e2e8f0 !important;
+  border-right: none !important;
+}
+
+.editor-toolbar {
+  border-color: #e2e8f0 !important;
+  background-color: #f8fafc !important;
+  opacity: 1 !important;
+}
+
+.EasyMDEContainer .CodeMirror {
+  border-color: #e2e8f0 !important;
+  color: #334155 !important;
+  background-color: #ffffff !important;
+}

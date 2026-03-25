@@ -5,16 +5,17 @@ import Link from 'next/link';
 import { Card } from '../Card/Card';
 import { Badge } from '../Badge/Badge';
 import { FadeIn } from '../FadeIn/FadeIn';
+import { Post } from '@/types/post';
 import styles from './ProjectList.module.css';
 
 const CATEGORIES = ['All', 'Web & App', 'Data & ML', 'Cybersecurity', 'Infrastructure'];
 
-export const ProjectList = ({ initialProjects }: { initialProjects: any[] }) => {
+export const ProjectList = ({ initialProjects }: { initialProjects: Post[] }) => {
   const [activeCategory, setActiveCategory] = useState('All');
 
   const filteredProjects = activeCategory === 'All' 
     ? initialProjects 
-    : initialProjects.filter(project => project.meta.category === activeCategory);
+    : initialProjects.filter(project => project.category === activeCategory);
 
   return (
     <div>
@@ -36,20 +37,20 @@ export const ProjectList = ({ initialProjects }: { initialProjects: any[] }) => 
 
       <div className={styles.grid}>
         {filteredProjects.length > 0 ? (
-          filteredProjects.map((project: any, index: number) => (
+          filteredProjects.map((project: Post, index: number) => (
             <FadeIn key={project.slug} delay={index * 0.1}>
               <Link href={`/projects/${project.slug}`} className={styles.link}>
                 <Card className={styles.card}>
                   <div className={styles.cardHeader}>
-                    <h2 className={styles.projectTitle}>{project.meta.title}</h2>
-                    {project.meta.category && (
-                        <span className={styles.categoryBadge}>{project.meta.category}</span>
+                    <h2 className={styles.projectTitle}>{project.title}</h2>
+                    {project.category && (
+                        <span className={styles.categoryBadge}>{project.category}</span>
                     )}
                   </div>
-                  <p className={styles.excerpt}>{project.meta.excerpt}</p>
-                  {project.meta.technologies && (
+                  <p className={styles.excerpt}>{project.excerpt}</p>
+                  {project.technologies && (
                     <div className={styles.techStack}>
-                      {project.meta.technologies.slice(0, 4).map((tech: string) => (
+                      {project.technologies.slice(0, 4).map((tech: string) => (
                         <Badge key={tech}>{tech}</Badge>
                       ))}
                     </div>
