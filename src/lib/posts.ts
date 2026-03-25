@@ -16,7 +16,7 @@ export async function getAllPostsWithSupabase(type: ContentType) {
         category: post.meta.category,
         technologies: post.meta.technologies,
         issuer: post.meta.issuer,
-        credentialUrl: post.meta.credentialUrl,
+        credential_url: post.meta.credentialUrl,
         type: type,
         source: 'mdx'
     }));
@@ -78,7 +78,7 @@ export async function getPostWithSupabase(type: ContentType, slug: string) {
             category: mdxPost.meta.category,
             technologies: mdxPost.meta.technologies,
             issuer: mdxPost.meta.issuer,
-            credentialUrl: mdxPost.meta.credentialUrl,
+            credential_url: mdxPost.meta.credentialUrl,
             github: mdxPost.meta.github,
             demo: mdxPost.meta.demo,
             type: type,

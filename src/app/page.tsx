@@ -91,9 +91,9 @@ export default async function Home() {
                     <h3 className={styles.certTitle}>{cert.title}</h3>
                     <p className={styles.certIssuer}>{cert.issuer}</p>
                     <p className={styles.certDate}>{cert.date}</p>
-                    {cert.credentialUrl && (
+                    {cert.credential_url && (
                       <a
-                        href={cert.credentialUrl}
+                        href={cert.credential_url}
                         target="_blank"
                         rel="noopener noreferrer"
                         className={styles.certLink}

@@ -68,7 +68,7 @@ export async function POST(request: Request) {
     // Zod validation
     const result = postSchema.safeParse(body);
     if (!result.success) {
-        const errors = result.error.errors.map(err => `${err.path.join('.')}: ${err.message}`).join(', ');
+        const errors = result.error.issues.map(err => `${err.path.join('.')}: ${err.message}`).join(', ');
         return NextResponse.json({ error: `Validation failed - ${errors}` }, { status: 400 });
     }
 
