@@ -1,5 +1,5 @@
 import { getAllPosts as getMdxPosts, ContentType } from './mdx';
-import { createClient } from './supabase/server';
+import { createClient } from '@supabase/supabase-js';
 
 export async function getAllPostsWithSupabase(type: ContentType) {
     // 1. Get local MDX posts
@@ -23,7 +23,10 @@ export async function getAllPostsWithSupabase(type: ContentType) {
 
     try {
         // 3. Get Supabase posts
-        const supabase = await createClient();
+        const supabase = createClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL!,
+            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+        );
         const { data: dbPosts, error } = await supabase
             .from('posts')
             .select('*')
@@ -88,7 +91,10 @@ export async function getPostWithSupabase(type: ContentType, slug: string) {
 
     // 2. Try Supabase
     try {
-        const supabase = await createClient();
+        const supabase = createClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL!,
+            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+        );
         const { data: dbPost, error } = await supabase
             .from('posts')
             .select('*')
