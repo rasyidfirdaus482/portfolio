@@ -19,6 +19,7 @@ const geistMono = Geist_Mono({
 });
 
 import { Providers } from "@/components/layout/Providers/Providers";
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://rasyidfirdaus.vercel.app'),
@@ -75,6 +76,7 @@ export default function RootLayout({
           <Footer />
           <BackToTop />
         </Providers>
+        <Analytics />
       </body>
     </html>
   );
