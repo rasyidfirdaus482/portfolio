@@ -78,14 +78,10 @@ export default async function ProjectPost({ params }: { params: Promise<{ slug: 
                 )}
                 <div className={styles.links}>
                     {project.github && (
-                        <a href={project.github} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
-                            <Button variant="outline">View Source Code</Button>
-                        </a>
+                        <Button href={project.github} target="_blank" rel="noopener noreferrer" variant="outline">View Source Code</Button>
                     )}
                     {project.demo && (
-                        <a href={project.demo} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
-                            <Button variant="primary">Live Demo</Button>
-                        </a>
+                        <Button href={project.demo} target="_blank" rel="noopener noreferrer" variant="primary">Live Demo</Button>
                     )}
                 </div>
             </header>

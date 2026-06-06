@@ -1,5 +1,14 @@
 import { createClient } from '@supabase/supabase-js';
-import { getAllPosts as getMdxPosts, ContentType } from './mdx';
+import { getAllPosts as getMdxPosts, ContentType, PostMeta } from './mdx';
+import type { Database } from '@/types/database.types';
+
+export type SupabasePostType = Database['public']['Tables']['posts']['Row']['type'];
+
+export function toSupabasePostType(type: ContentType): SupabasePostType {
+    if (type === 'projects') return 'project';
+    if (type === 'certificates') return 'certificate';
+    return 'blog';
+}
 
 // Server-side Supabase client (not user-authenticated, just reads public data)
 function getSupabaseAdmin() {
@@ -11,7 +20,7 @@ function getSupabaseAdmin() {
 
 interface HybridPost {
     slug: string;
-    meta: Record<string, any>;
+    meta: PostMeta;
     content: string;
     source: 'mdx' | 'supabase';
 }
@@ -35,7 +44,7 @@ export async function getHybridPosts(type: ContentType): Promise<HybridPost[]> {
 
     if (supabase) {
         try {
-            const supabaseType = type === 'projects' ? 'project' : type === 'certificates' ? 'certificate' : type;
+            const supabaseType = toSupabasePostType(type);
             const { data } = await supabase
                 .from('posts')
                 .select('*')
@@ -56,7 +65,7 @@ export async function getHybridPosts(type: ContentType): Promise<HybridPost[]> {
                         credentialUrl: post.credential_url,
                         cover_image: post.cover_image,
                     },
-                    content: post.content,
+                    content: post.content || '',
                     source: 'supabase' as const,
                 }));
             }

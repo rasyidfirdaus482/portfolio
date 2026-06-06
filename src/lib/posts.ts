@@ -1,15 +1,28 @@
 import { getAllPosts as getMdxPosts, ContentType } from './mdx';
 import { createClient } from '@supabase/supabase-js';
+import { toSupabasePostType } from './hybrid';
+
+function getSupabasePublicClient() {
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    if (!url || !key) return null;
+    return createClient(url, key);
+}
+
+function estimateReadingTime(content?: string | null) {
+    return `${Math.ceil((content?.split(' ').length || 0) / 200)} min read`;
+}
 
 export async function getAllPostsWithSupabase(type: ContentType) {
     // 1. Get local MDX posts
     const mdxPosts = getMdxPosts(type);
+    const supabaseType = toSupabasePostType(type);
 
     // 2. Format MDX posts to match unified shape
     const formattedMdxPosts = mdxPosts.map(post => ({
         slug: post.slug,
-        title: post.meta.title,
-        excerpt: post.meta.excerpt,
+        title: post.meta.title || post.slug,
+        excerpt: post.meta.excerpt || '',
         content: post.content,
         date: post.meta.date,
         readingTime: post.meta.readingTime,
@@ -17,20 +30,19 @@ export async function getAllPostsWithSupabase(type: ContentType) {
         technologies: post.meta.technologies,
         issuer: post.meta.issuer,
         credential_url: post.meta.credentialUrl,
-        type: type,
+        type: supabaseType,
         source: 'mdx'
     }));
 
     try {
         // 3. Get Supabase posts
-        const supabase = createClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-        );
+        const supabase = getSupabasePublicClient();
+        if (!supabase) return formattedMdxPosts;
+
         const { data: dbPosts, error } = await supabase
             .from('posts')
             .select('*')
-            .eq('type', type)
+            .eq('type', supabaseType)
             .eq('published', true)
             .order('date', { ascending: false });
 
@@ -40,11 +52,14 @@ export async function getAllPostsWithSupabase(type: ContentType) {
         }
 
         // 4. Format DB posts
-        const formattedDbPosts = (dbPosts || []).map(post => ({
-            ...post,
-            readingTime: `${Math.ceil((post.content?.split(' ').length || 0) / 200)} min read`, // rough estimate
-            source: 'db'
-        }));
+        const mdxSlugs = new Set(formattedMdxPosts.map(post => post.slug));
+        const formattedDbPosts = (dbPosts || [])
+            .filter(post => !mdxSlugs.has(post.slug))
+            .map(post => ({
+                ...post,
+                readingTime: estimateReadingTime(post.content),
+                source: 'db'
+            }));
 
         // 5. Merge and sort
         const allPosts = [...formattedMdxPosts, ...formattedDbPosts].sort((a, b) => {
@@ -62,19 +77,21 @@ export async function getAllPostsWithSupabase(type: ContentType) {
 }
 
 export async function getPostWithSupabase(type: ContentType, slug: string) {
+    const supabaseType = toSupabasePostType(type);
+
     // 1. Try Local MDX first
     let mdxPost = null;
     try {
         mdxPost = getMdxPosts(type).find(p => p.slug === slug);
-    } catch (e) {
+    } catch {
         // Ignored
     }
 
     if (mdxPost) {
         return {
             slug: mdxPost.slug,
-            title: mdxPost.meta.title,
-            excerpt: mdxPost.meta.excerpt,
+            title: mdxPost.meta.title || mdxPost.slug,
+            excerpt: mdxPost.meta.excerpt || '',
             content: mdxPost.content,
             date: mdxPost.meta.date,
             readingTime: mdxPost.meta.readingTime,
@@ -84,21 +101,20 @@ export async function getPostWithSupabase(type: ContentType, slug: string) {
             credential_url: mdxPost.meta.credentialUrl,
             github: mdxPost.meta.github,
             demo: mdxPost.meta.demo,
-            type: type,
+            type: supabaseType,
             source: 'mdx'
-        } as Record<string, any>;
+        };
     }
 
     // 2. Try Supabase
     try {
-        const supabase = createClient(
-            process.env.NEXT_PUBLIC_SUPABASE_URL!,
-            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-        );
+        const supabase = getSupabasePublicClient();
+        if (!supabase) return null;
+
         const { data: dbPost, error } = await supabase
             .from('posts')
             .select('*')
-            .eq('type', type)
+            .eq('type', supabaseType)
             .eq('slug', slug)
             .eq('published', true)
             .single();
@@ -109,11 +125,11 @@ export async function getPostWithSupabase(type: ContentType, slug: string) {
 
         return {
             ...dbPost,
-            readingTime: `${Math.ceil((dbPost.content?.split(' ').length || 0) / 200)} min read`,
+            readingTime: estimateReadingTime(dbPost.content),
             source: 'db'
         };
 
-    } catch (err) {
+    } catch {
         return null;
     }
 }

@@ -14,32 +14,39 @@ export const TableOfContents = () => {
     const [activeId, setActiveId] = useState<string>('');
 
     useEffect(() => {
-        const elements = Array.from(document.querySelectorAll('h2, h3'))
-            .filter(element => element.id);
+        let observer: IntersectionObserver | null = null;
 
-        const headingElements: Heading[] = elements.map((element) => ({
-            id: element.id,
-            text: element.textContent || '',
-            level: Number(element.tagName.charAt(1)),
-        }));
+        const frame = window.requestAnimationFrame(() => {
+            const elements = Array.from(document.querySelectorAll('h2, h3'))
+                .filter(element => element.id);
 
-        setHeadings(headingElements);
+            const headingElements: Heading[] = elements.map((element) => ({
+                id: element.id,
+                text: element.textContent || '',
+                level: Number(element.tagName.charAt(1)),
+            }));
 
-        const callback = (entries: IntersectionObserverEntry[]) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    setActiveId(entry.target.id);
-                }
+            setHeadings(headingElements);
+
+            const callback = (entries: IntersectionObserverEntry[]) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        setActiveId(entry.target.id);
+                    }
+                });
+            };
+
+            observer = new IntersectionObserver(callback, {
+                rootMargin: '0px 0px -80% 0px',
             });
-        };
 
-        const observer = new IntersectionObserver(callback, {
-            rootMargin: '0px 0px -80% 0px',
+            elements.forEach((element) => observer?.observe(element));
         });
 
-        elements.forEach((element) => observer.observe(element));
-
-        return () => observer.disconnect();
+        return () => {
+            window.cancelAnimationFrame(frame);
+            observer?.disconnect();
+        };
     }, []);
 
     if (headings.length === 0) return null;

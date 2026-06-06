@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useSyncExternalStore } from 'react';
 import styles from './ShareButton.module.css';
 
 interface ShareButtonProps {
@@ -8,14 +8,14 @@ interface ShareButtonProps {
     url?: string;
 }
 
-export const ShareButton = ({ title, url }: ShareButtonProps) => {
-    const [currentUrl, setCurrentUrl] = useState(url || '');
+const subscribe = () => () => {};
 
-    useEffect(() => {
-        if (!url) {
-            setCurrentUrl(window.location.href);
-        }
-    }, [url]);
+export const ShareButton = ({ title, url }: ShareButtonProps) => {
+    const currentUrl = useSyncExternalStore(
+        subscribe,
+        () => url || window.location.href,
+        () => url || ''
+    );
 
     const encodedTitle = encodeURIComponent(title);
     const encodedUrl = encodeURIComponent(currentUrl);

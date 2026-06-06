@@ -3,6 +3,8 @@ import { createClient } from '@/lib/supabase/server';
 import { PostsClient } from './PostsClient';
 import { PostRow } from '@/types/post';
 
+export const dynamic = 'force-dynamic';
+
 export default async function PostListPage() {
     const supabase = await createClient();
     

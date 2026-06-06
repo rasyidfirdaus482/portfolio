@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useCallback, useRef, useEffect } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import ReactMarkdown from 'react-markdown';
@@ -42,13 +42,13 @@ export default function NewPostPage() {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const coverInputRef = useRef<HTMLInputElement>(null);
 
-    // Auto-slug from title
-    useEffect(() => {
-        setForm(prev => ({ ...prev, slug: slugify(prev.title) }));
-    }, [form.title]);
-
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-        setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
+        const { name, value } = e.target;
+        setForm(prev => ({
+            ...prev,
+            [name]: value,
+            ...(name === 'title' ? { slug: slugify(value) } : {}),
+        }));
     };
 
     const handleContentChange = useCallback((value: string) => {

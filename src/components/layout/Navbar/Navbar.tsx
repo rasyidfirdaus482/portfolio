@@ -13,13 +13,17 @@ const navItems = [
     { href: '/about', label: 'About' },
 ];
 
+const resumeUrl = process.env.NEXT_PUBLIC_RESUME_URL;
+
 export const Navbar: React.FC = () => {
-    const [isOpen, setIsOpen] = useState(false);
+    const [menuState, setMenuState] = useState<{ isOpen: boolean; pathname: string | null }>({
+        isOpen: false,
+        pathname: null,
+    });
     const [scrolled, setScrolled] = useState(false);
     const pathname = usePathname();
     const isAdmin = pathname?.startsWith('/admin');
-
-    useEffect(() => { setIsOpen(false); }, [pathname]);
+    const isOpen = menuState.pathname === pathname ? menuState.isOpen : false;
 
     useEffect(() => {
         if (isAdmin) return;
@@ -66,7 +70,11 @@ export const Navbar: React.FC = () => {
                     <nav className={`${styles.navLinks} ${isOpen ? styles.navOpen : ''}`}>
                         {/* Mobile: logo at top */}
                         <div className={styles.mobileMenuHeader}>
-                            <Link href="/" className={styles.mobileMenuLogo} onClick={() => setIsOpen(false)}>
+                            <Link
+                                href="/"
+                                className={styles.mobileMenuLogo}
+                                onClick={() => setMenuState({ isOpen: false, pathname: pathname ?? null })}
+                            >
                                 rasyid.
                             </Link>
                         </div>
@@ -83,15 +91,17 @@ export const Navbar: React.FC = () => {
                                     {item.label}
                                 </Link>
                             ))}
-                            <a
-                                href="/resume.pdf"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className={styles.resumeBtn}
-                                style={{ animationDelay: isOpen ? `${navItems.length * 0.06}s` : '0s' }}
-                            >
-                                Resume
-                            </a>
+                            {resumeUrl && (
+                                <a
+                                    href={resumeUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className={styles.resumeBtn}
+                                    style={{ animationDelay: isOpen ? `${navItems.length * 0.06}s` : '0s' }}
+                                >
+                                    Resume
+                                </a>
+                            )}
                         </div>
 
                         {/* Mobile: social footer */}
@@ -107,7 +117,7 @@ export const Navbar: React.FC = () => {
                     <ThemeToggle />
                     <button
                         className={`${styles.hamburger} ${isOpen ? styles.hamburgerOpen : ''}`}
-                        onClick={() => setIsOpen(!isOpen)}
+                        onClick={() => setMenuState({ isOpen: !isOpen, pathname: pathname ?? null })}
                         aria-label="Toggle navigation menu"
                         aria-expanded={isOpen}
                     >
@@ -118,7 +128,7 @@ export const Navbar: React.FC = () => {
                 </div>
             </Container>
 
-            {isOpen && <div className={styles.overlay} onClick={() => setIsOpen(false)} />}
+            {isOpen && <div className={styles.overlay} onClick={() => setMenuState({ isOpen: false, pathname: pathname ?? null })} />}
         </header>
     );
 };

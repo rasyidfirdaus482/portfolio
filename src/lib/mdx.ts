@@ -7,6 +7,21 @@ const contentDirectory = path.join(process.cwd(), 'content');
 
 export type ContentType = 'blog' | 'projects' | 'certificates';
 
+export interface PostMeta {
+    title?: string;
+    excerpt?: string;
+    date?: string;
+    readingTime?: string;
+    category?: string;
+    technologies?: string[];
+    issuer?: string;
+    credentialUrl?: string;
+    github?: string;
+    demo?: string;
+    cover_image?: string;
+    [key: string]: unknown;
+}
+
 export function getPostSlugs(type: ContentType) {
     const dir = path.join(contentDirectory, type);
     if (!fs.existsSync(dir)) return [];
@@ -29,7 +44,7 @@ export function getPostBySlug(type: ContentType, slug: string) {
     const { data, content } = matter(fileContents);
     const timeToRead = readingTime(content).text;
 
-    return { slug: realSlug, meta: { ...data, readingTime: timeToRead } as Record<string, any>, content };
+    return { slug: realSlug, meta: { ...(data as PostMeta), readingTime: timeToRead }, content };
 }
 
 export function getAllPosts(type: ContentType) {
@@ -39,10 +54,8 @@ export function getAllPosts(type: ContentType) {
         .filter((post): post is NonNullable<typeof post> => post !== null)
         // sort posts by date in descending order
         .sort((post1, post2) => {
-            const p1 = post1 as any;
-            const p2 = post2 as any;
-            if (!p1.meta.date || !p2.meta.date) return 0;
-            return (new Date(p1.meta.date) > new Date(p2.meta.date) ? -1 : 1);
+            if (!post1.meta.date || !post2.meta.date) return 0;
+            return (new Date(post1.meta.date) > new Date(post2.meta.date) ? -1 : 1);
         });
     return posts;
 }

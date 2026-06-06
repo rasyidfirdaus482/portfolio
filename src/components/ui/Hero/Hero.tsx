@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 import { Button } from '../Button/Button';
 import { FadeIn } from '../FadeIn/FadeIn';
 import { TypeWriter } from '../TypeWriter/TypeWriter';
@@ -41,12 +40,8 @@ export const Hero: React.FC = () => {
                 </FadeIn>
                 <FadeIn delay={0.5}>
                     <div className={styles.actions}>
-                        <Link href="/projects" style={{ textDecoration: 'none' }}>
-                            <Button variant="primary" size="lg">Explore My Work</Button>
-                        </Link>
-                        <Link href="/about" style={{ textDecoration: 'none' }}>
-                            <Button variant="secondary" size="lg">About Me</Button>
-                        </Link>
+                        <Button href="/projects" variant="primary" size="lg">Explore My Work</Button>
+                        <Button href="/about" variant="secondary" size="lg">About Me</Button>
                     </div>
                 </FadeIn>
             </div>

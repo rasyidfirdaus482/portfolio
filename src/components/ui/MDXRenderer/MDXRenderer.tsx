@@ -11,20 +11,26 @@ import { Image } from '../Image/Image';
 import { CodeBlock } from '../CodeBlock/CodeBlock';
 import styles from './MDXRenderer.module.css';
 
+type MDXRemoteOptions = React.ComponentProps<typeof MDXRemote>['options'];
+
 const components = {
   Button,
   Card,
   Badge,
-  pre: (props: any) => <CodeBlock {...props} />,
-  img: (props: any) => (
-    <Image
-      src={props.src}
-      alt={props.alt || ''}
-      width={800}
-      height={450}
-      style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
-    />
-  ),
+  pre: (props: React.HTMLAttributes<HTMLPreElement>) => <CodeBlock {...props} />,
+  img: ({ src, alt }: React.ImgHTMLAttributes<HTMLImageElement>) => {
+    if (typeof src !== 'string') return null;
+
+    return (
+      <Image
+        src={src}
+        alt={alt || ''}
+        width={800}
+        height={450}
+        style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
+      />
+    );
+  },
 };
 
 export function MDXRenderer({ source }: { source: string }) {
@@ -34,14 +40,14 @@ export function MDXRenderer({ source }: { source: string }) {
         [rehypeRaw, { passThrough: ['mdxjsEsm', 'mdxJsxFlowElement', 'mdxJsxTextElement', 'mdxTextExpression', 'mdxFlowExpression'] }],
         rehypeSlug,
         [rehypeAutolinkHeadings, { behavior: 'wrap' }],
-        [rehypePrism as any, { ignoreMissing: true }],
+        [rehypePrism as unknown, { ignoreMissing: true }],
       ],
     },
   };
 
   return (
     <article className={styles.mdxContent}>
-      <MDXRemote source={source} components={components} options={options as any} />
+      <MDXRemote source={source} components={components} options={options as MDXRemoteOptions} />
     </article>
   );
 }

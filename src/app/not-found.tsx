@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { Container } from "@/components/layout/Container/Container";
 import { Button } from "@/components/ui/Button/Button";
 import { FadeIn } from "@/components/ui/FadeIn/FadeIn";
@@ -16,9 +15,7 @@ export default function NotFound() {
               Oops! The page you are looking for does not exist. It might have been moved or deleted.
             </p>
             <div className={styles.actions}>
-              <Link href="/" style={{ textDecoration: 'none' }}>
-                <Button variant="primary" size="lg">Return Home</Button>
-              </Link>
+              <Button href="/" variant="primary" size="lg">Return Home</Button>
             </div>
           </div>
         </FadeIn>

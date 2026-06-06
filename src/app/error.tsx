@@ -66,7 +66,7 @@ export default function GlobalError({
                     marginBottom: '2rem',
                     lineHeight: 1.6
                 }}>
-                    We encountered an unexpected error while processing your request. Most likely, the connection to the database timed out. Let's try that again.
+                    We encountered an unexpected error while processing your request. Most likely, the connection to the database timed out. Let&apos;s try that again.
                 </p>
 
                 <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>

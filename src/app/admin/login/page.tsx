@@ -11,17 +11,23 @@ export default function LoginPage() {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const router = useRouter();
-    const supabase = createClient();
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
         setError('');
 
-        const { error: authError } = await supabase.auth.signInWithPassword({
-            email,
-            password,
-        });
+        let authError: Error | null = null;
+        try {
+            const supabase = createClient();
+            const { error } = await supabase.auth.signInWithPassword({
+                email,
+                password,
+            });
+            authError = error;
+        } catch {
+            authError = new Error('Supabase is not configured.');
+        }
 
         if (authError) {
             setError(authError.message);

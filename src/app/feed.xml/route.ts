@@ -1,9 +1,10 @@
 import { Feed } from "feed";
-import { getAllPosts } from "@/lib/mdx";
+import { getAllPostsWithSupabase } from "@/lib/posts";
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  const baseUrl = "https://your-portfolio-domain.com";
+  const baseUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://rasyidfirdaus.vercel.app").replace(/\/$/, "");
+  const authorEmail = "rasyidfirdaus53@gmail.com";
   
   const feed = new Feed({
     title: "Rasyid Firdaus Harmaini's Blog & Portfolio",
@@ -16,37 +17,37 @@ export async function GET() {
     copyright: `All rights reserved ${new Date().getFullYear()}, Rasyid Firdaus Harmaini`,
     author: {
       name: "Rasyid Firdaus Harmaini",
-      email: "hello@example.com",
+      email: authorEmail,
       link: baseUrl,
     },
   });
 
-  const blogs = getAllPosts("blog");
-  const projects = getAllPosts("projects");
+  const blogs = await getAllPostsWithSupabase("blog");
+  const projects = await getAllPostsWithSupabase("projects");
 
-  const allItems = [...blogs, ...projects].sort((a: any, b: any) => 
-    new Date(b.meta.date) > new Date(a.meta.date) ? 1 : -1
+  const allItems = [...blogs, ...projects].sort((a, b) =>
+    new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime()
   );
 
-  allItems.forEach((item: any) => {
-    const url = item.meta.category 
+  allItems.forEach((item) => {
+    const url = item.type === "project"
         ? `${baseUrl}/projects/${item.slug}` 
         : `${baseUrl}/blog/${item.slug}`;
         
     feed.addItem({
-      title: item.meta.title,
+      title: item.title,
       id: url,
       link: url,
-      description: item.meta.excerpt,
-      content: item.meta.excerpt, 
+      description: item.excerpt || "",
+      content: item.excerpt || "",
       author: [
         {
           name: "Rasyid Firdaus Harmaini",
-          email: "hello@example.com",
+          email: authorEmail,
           link: baseUrl,
         },
       ],
-      date: new Date(item.meta.date || new Date()),
+      date: new Date(item.date || new Date()),
     });
   });
 

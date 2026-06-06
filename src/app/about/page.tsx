@@ -52,8 +52,8 @@ export default function AboutPage() {
         <div className={styles.prose}>
           <FadeIn delay={0.3}>
             <p>
-              Hello! I'm Rasyid Firdaus Harmaini, a multidisciplinary engineer who thrives at the intersection of software development, artificial intelligence, and cybersecurity.
-              My journey didn't just stop at building responsive web applications; it evolved into securing the underlying infrastructure and crunching data to train machine learning models.
+              Hello! I&apos;m Rasyid Firdaus Harmaini, a multidisciplinary engineer who thrives at the intersection of software development, artificial intelligence, and cybersecurity.
+              My journey didn&apos;t just stop at building responsive web applications; it evolved into securing the underlying infrastructure and crunching data to train machine learning models.
             </p>
           </FadeIn>
           <FadeIn delay={0.4}>
@@ -107,9 +107,9 @@ export default function AboutPage() {
             </div>
           </FadeIn>
           <FadeIn delay={0.9}>
-            <h2>Let's Connect</h2>
+            <h2>Let&apos;s Connect</h2>
             <p style={{ marginBottom: '2rem' }}>
-              Whether you need to build a scalable web app, analyze complex datasets, or secure your server infrastructure, I'm here to help.
+              Whether you need to build a scalable web app, analyze complex datasets, or secure your server infrastructure, I&apos;m here to help.
               Fill out the form below or find me on <a href="https://github.com/rasyidfirdaus482">GitHub</a>.
             </p>
             <ContactForm />

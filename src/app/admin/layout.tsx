@@ -1,51 +1,67 @@
 'use client';
 
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
+import type { User } from '@supabase/supabase-js';
 import styles from './admin.module.css';
 import 'easymde/dist/easymde.min.css';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-    const [user, setUser] = useState<any>(null);
+    const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
-    const [redirecting, setRedirecting] = useState(false);
     const router = useRouter();
     const pathname = usePathname();
-    const supabase = useMemo(() => createClient(), []);
+    const supabaseRef = useRef<ReturnType<typeof createClient> | null>(null);
+    const redirectingRef = useRef(false);
 
     useEffect(() => {
         let cancelled = false;
+        let authSubscription: { unsubscribe: () => void } | null = null;
 
-        const getUser = async () => {
+        const initAuth = async () => {
+            const supabase = createClient();
+            supabaseRef.current = supabase;
+
+            const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+                if (!cancelled) {
+                    setUser(session?.user ?? null);
+                }
+            });
+            authSubscription = subscription;
+
             const { data: { user } } = await supabase.auth.getUser();
             if (!cancelled) {
                 setUser(user);
                 setLoading(false);
             }
         };
-        getUser();
 
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+        initAuth().catch(() => {
             if (!cancelled) {
-                setUser(session?.user ?? null);
+                setUser(null);
+                setLoading(false);
             }
         });
 
         return () => {
             cancelled = true;
-            subscription.unsubscribe();
+            authSubscription?.unsubscribe();
         };
-    }, [supabase]);
+    }, []);
 
     // Redirect to login if not authenticated (only for non-login pages)
     useEffect(() => {
-        if (!loading && !user && !redirecting && pathname !== '/admin/login') {
-            setRedirecting(true);
+        if (user) {
+            redirectingRef.current = false;
+        }
+
+        if (!loading && !user && !redirectingRef.current && pathname !== '/admin/login') {
+            redirectingRef.current = true;
             router.replace('/admin/login');
         }
-    }, [loading, user, redirecting, router, pathname]);
+    }, [loading, user, router, pathname]);
 
     // Login page renders without sidebar
     if (pathname === '/admin/login') {
@@ -61,7 +77,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     }
 
     const handleLogout = async () => {
-        await supabase.auth.signOut();
+        await supabaseRef.current?.auth.signOut();
         setUser(null);
         router.replace('/admin/login');
     };

@@ -4,6 +4,8 @@ import styles from '../admin.module.css';
 import { createClient } from '@/lib/supabase/server';
 import { PostRow } from '@/types/post';
 
+export const dynamic = 'force-dynamic';
+
 export default async function DashboardPage() {
     const supabase = await createClient();
     const { data: dbPosts } = await supabase.from('posts').select('*');
