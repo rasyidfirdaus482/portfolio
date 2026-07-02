@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from '../admin.module.css';
 import { ResumeSettings } from './ResumeSettings';
+import { AboutSettings } from './AboutSettings';
 
 export default function SettingsPage() {
     return (
@@ -13,6 +14,7 @@ export default function SettingsPage() {
             </div>
 
             <ResumeSettings />
+            <AboutSettings />
         </div>
     );
 }

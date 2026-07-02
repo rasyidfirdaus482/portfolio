@@ -9,10 +9,10 @@ import type { Metadata } from "next";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "Blog — Rasyid Firdaus Harmaini",
+  title: "Blog - Rasyid Firdaus Harmaini",
   description: "Articles and notes on software engineering, web development, data, infrastructure, and security.",
   openGraph: {
-    title: "Blog — Rasyid Firdaus Harmaini",
+    title: "Blog - Rasyid Firdaus Harmaini",
     description: "Articles and notes on software engineering, web development, data, infrastructure, and security.",
   },
 };
@@ -21,12 +21,31 @@ export default async function BlogIndex() {
   const posts = await getAllPostsWithSupabase('blog');
 
   return (
-    <Container className={styles.container}>
-      <Breadcrumbs items={[{ label: 'Blog' }]} />
-      <FadeIn>
-        <h1 className={styles.title}>Blog</h1>
-        <p className={styles.subtitle}>Articles and notes on software engineering, data, infrastructure, and security.</p>
-      </FadeIn>
+    <Container className={styles.page}>
+      <div className={styles.hero}>
+        <Breadcrumbs items={[{ label: 'Blog' }]} />
+        <FadeIn>
+          <div className={styles.heroContent}>
+            <div>
+              <p className={styles.eyebrow}>Writing</p>
+              <h1 className={styles.title}>Blog</h1>
+              <p className={styles.subtitle}>
+                Articles and notes on software engineering, data, infrastructure, and security.
+              </p>
+            </div>
+            <div className={styles.heroStats}>
+              <div>
+                <span className={styles.statValue}>{posts.length}</span>
+                <span className={styles.statLabel}>Articles</span>
+              </div>
+              <div>
+                <span className={styles.statValue}>Technical</span>
+                <span className={styles.statLabel}>Focus</span>
+              </div>
+            </div>
+          </div>
+        </FadeIn>
+      </div>
 
       <BlogList initialPosts={posts} />
     </Container>
