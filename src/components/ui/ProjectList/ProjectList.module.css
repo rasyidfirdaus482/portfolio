@@ -1,7 +1,5 @@
 .filterContainer {
     margin-bottom: 3rem;
-    overflow-x: auto;
-    padding-bottom: 0.5rem;
 }
 
 .tabs {
@@ -51,14 +49,94 @@
     text-decoration: none;
     color: inherit;
     display: block;
-    height: 100%;
+    flex: 1;
+}
+
+.techFilters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.techFilter {
+    padding: 0.45rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background: transparent;
+    color: var(--foreground);
+    opacity: 0.65;
+    transition: opacity 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.techFilter:hover,
+.activeTechFilter {
+    opacity: 1;
+    border-color: #3b82f6;
+    background-color: rgba(59, 130, 246, 0.08);
+}
+
+:global(.dark) .techFilter {
+    border-color: rgba(255, 255, 255, 0.12);
 }
 
 .card {
     height: 100%;
-    padding: 1.5rem;
+    padding: 0;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+}
+
+.cardCover {
+    width: 100%;
+    height: 170px;
+    object-fit: cover;
+    display: block;
+}
+
+.cardCoverFallback {
+    height: 170px;
+    display: flex;
+    align-items: flex-end;
+    padding: 1rem;
+    background:
+        linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(5, 150, 105, 0.78)),
+        repeating-linear-gradient(90deg, transparent 0 32px, rgba(255, 255, 255, 0.1) 32px 33px);
+    color: #fff;
+}
+
+.cardCoverFallback span {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.statusRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    padding: 1.25rem 1.5rem 0;
+}
+
+.statusBadge {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.45rem;
+    border-radius: 4px;
+    background-color: rgba(16, 185, 129, 0.1);
+    color: #059669;
+}
+
+:global(.dark) .statusBadge {
+    background-color: rgba(16, 185, 129, 0.16);
+    color: #34d399;
 }
 
 .cardHeader {
@@ -67,6 +145,7 @@
     align-items: flex-start;
     gap: 1rem;
     margin-bottom: 0.75rem;
+    padding: 1rem 1.5rem 0;
 }
 
 .projectTitle {
@@ -93,6 +172,7 @@
     flex-grow: 1;
     margin-bottom: 1.5rem;
     font-size: 0.95rem;
+    padding: 0 1.5rem;
 }
 
 .techStack {
@@ -100,6 +180,55 @@
     flex-wrap: wrap;
     gap: 0.5rem;
     margin-top: auto;
+    padding: 0 1.5rem;
+}
+
+.cardActions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+    padding: 1rem 1.5rem 1.5rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+:global(.dark) .cardActions {
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.visitBtn,
+.githubBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.25rem;
+    padding: 0.45rem 0.85rem;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: transform 0.15s ease, opacity 0.15s ease, border-color 0.15s ease;
+    gap: 0.35rem;
+}
+
+.visitBtn:hover,
+.githubBtn:hover {
+    transform: translateY(-1px);
+    opacity: 0.9;
+}
+
+.visitBtn {
+    background-color: #3b82f6;
+    color: #fff;
+}
+
+.githubBtn {
+    border: 1px solid rgba(0, 0, 0, 0.14);
+    color: var(--foreground);
+}
+
+:global(.dark) .githubBtn {
+    border-color: rgba(255, 255, 255, 0.18);
 }
 
 .emptyState {

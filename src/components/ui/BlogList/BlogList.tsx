@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Card } from '../Card/Card';
 import { FadeIn } from '../FadeIn/FadeIn';
 import { Post } from '@/types/post';
@@ -49,7 +50,7 @@ export const BlogList = ({ initialPosts }: { initialPosts: Post[] }) => {
                             <Link href={`/blog/${post.slug}`} className={styles.link}>
                                 <Card className={styles.card}>
                                     {post.cover_image && (
-                                        <img src={post.cover_image} alt={post.title} className={styles.cardCover} />
+                                        <Image src={post.cover_image} alt={post.title} className={styles.cardCover} width={900} height={360} />
                                     )}
                                     <div className={styles.cardBody}>
                                         <h2 className={styles.postTitle}>{post.title}</h2>

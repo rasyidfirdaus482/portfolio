@@ -6,6 +6,10 @@ import { createClient } from '@/lib/supabase/client';
 import styles from '../admin.module.css';
 
 export default function LoginPage() {
+    const isSupabaseConfigured = Boolean(
+        process.env.NEXT_PUBLIC_SUPABASE_URL &&
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+    );
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -14,6 +18,11 @@ export default function LoginPage() {
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (!isSupabaseConfigured) {
+            setError('Supabase is not configured. Fill NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local.');
+            return;
+        }
+
         setLoading(true);
         setError('');
 
@@ -72,10 +81,15 @@ export default function LoginPage() {
                     <button
                         type="submit"
                         className={styles.loginBtn}
-                        disabled={loading}
+                        disabled={loading || !isSupabaseConfigured}
                     >
                         {loading ? 'Signing in...' : 'Sign In'}
                     </button>
+                    {!isSupabaseConfigured && (
+                        <p className={styles.loginError}>
+                            Supabase is not configured. Fill .env.local to enable admin login.
+                        </p>
+                    )}
                     {error && <p className={styles.loginError}>{error}</p>}
                 </form>
             </div>

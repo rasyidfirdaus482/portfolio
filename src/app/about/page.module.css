@@ -158,3 +158,47 @@
     font-size: 0.875rem;
     padding: 0.5rem 1rem;
 }
+
+.experienceList {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 1.25rem 0 2rem;
+}
+
+.experienceItem {
+    display: grid;
+    grid-template-columns: 88px 1fr;
+    gap: 1rem;
+    padding: 1.25rem 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+:global(.dark) .experienceItem {
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.experienceDate {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #3b82f6;
+}
+
+.experienceItem h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.35rem;
+}
+
+.experienceItem p {
+    font-size: 1rem;
+    margin-bottom: 0;
+}
+
+@media (max-width: 640px) {
+    .experienceItem {
+        grid-template-columns: 1fr;
+        gap: 0.35rem;
+    }
+}

@@ -4,8 +4,11 @@ import { Card } from "@/components/ui/Card/Card";
 import { Badge } from "@/components/ui/Badge/Badge";
 import { FadeIn } from "@/components/ui/FadeIn/FadeIn";
 import { getAllPostsWithSupabase } from "@/lib/posts";
+import { getResumeUrl } from "@/lib/site-settings";
 import { Post } from "@/types/post";
 import Link from "next/link";
+import Image from "next/image";
+import { TrackedLink } from "@/components/ui/TrackedLink/TrackedLink";
 import styles from "./page.module.css";
 
 export const metadata = {
@@ -19,11 +22,14 @@ export const metadata = {
 export const revalidate = 60; // ISR: revalidate every 60 seconds
 
 export default async function Home() {
+  const resumeUrl = await getResumeUrl();
   const allBlogs = await getAllPostsWithSupabase('blog');
   const recentBlogs = allBlogs.slice(0, 3);
   
   const allProjects = await getAllPostsWithSupabase('projects');
-  const recentProjects = allProjects.slice(0, 3);
+  const featuredProjects = [...allProjects]
+    .sort((a: Post, b: Post) => Number(Boolean(b.demo || b.github || b.cover_image)) - Number(Boolean(a.demo || a.github || a.cover_image)))
+    .slice(0, 3);
   
   const certificates = await getAllPostsWithSupabase('certificates');
 
@@ -35,19 +41,28 @@ export default async function Home() {
         <section className={styles.section}>
           <FadeIn>
             <div className={styles.sectionHeader}>
-              <h2 className={styles.sectionTitle}>Recent Projects</h2>
+              <h2 className={styles.sectionTitle}>Featured Projects</h2>
               <Link href="/projects" className={styles.viewAll}>View All →</Link>
             </div>
           </FadeIn>
           <div className={styles.grid}>
-            {recentProjects.map((project: Post, index: number) => (
+            {featuredProjects.map((project: Post, index: number) => (
               <FadeIn key={project.slug} delay={index * 0.1}>
-                <Link href={`/projects/${project.slug}`} className={styles.link}>
-                  <Card className={styles.card}>
-                    {project.cover_image && (
-                      <img src={project.cover_image} alt={project.title} className={styles.cardCover} />
+                <Card className={styles.card}>
+                  <Link href={`/projects/${project.slug}`} className={styles.link}>
+                    {project.cover_image ? (
+                      <Image src={project.cover_image} alt={project.title} className={styles.cardCover} width={720} height={405} />
+                    ) : (
+                      <div className={styles.cardCoverFallback}>
+                        <span>{project.category || 'Project'}</span>
+                      </div>
                     )}
                     <div className={styles.cardBody}>
+                      <div className={styles.statusRow}>
+                        {project.demo && <span className={styles.statusBadge}>Live</span>}
+                        {project.github && <span className={styles.statusBadge}>Open Source</span>}
+                        <span className={styles.statusBadge}>Case Study</span>
+                      </div>
                       {project.category && (
                         <div className={styles.cardMeta}>
                           <Badge>{project.category}</Badge>
@@ -63,8 +78,22 @@ export default async function Home() {
                         </div>
                       )}
                     </div>
-                  </Card>
-                </Link>
+                  </Link>
+                  {(project.demo || project.github) && (
+                    <div className={styles.cardActions}>
+                      {project.demo && (
+                        <TrackedLink href={project.demo} target="_blank" rel="noopener noreferrer" className={styles.visitBtn} eventName="project_visit_click" eventProperties={{ source: 'home', slug: project.slug }}>
+                          Visit
+                        </TrackedLink>
+                      )}
+                      {project.github && (
+                        <TrackedLink href={project.github} target="_blank" rel="noopener noreferrer" className={styles.githubBtn} eventName="project_github_click" eventProperties={{ source: 'home', slug: project.slug }}>
+                          GitHub
+                        </TrackedLink>
+                      )}
+                    </div>
+                  )}
+                </Card>
               </FadeIn>
             ))}
           </div>
@@ -138,6 +167,25 @@ export default async function Home() {
               </FadeIn>
             ))}
           </div>
+        </section>
+
+        <section className={styles.ctaSection}>
+          <FadeIn>
+            <div>
+              <h2 className={styles.ctaTitle}>Need a practical engineer for web, data, or infrastructure work?</h2>
+              <p className={styles.ctaText}>
+                I build production-minded interfaces, content systems, and technical workflows with attention to maintainability and security.
+              </p>
+            </div>
+            <div className={styles.ctaActions}>
+              <Link href="/about" className={styles.ctaPrimary}>Contact Me</Link>
+              {resumeUrl && (
+                <TrackedLink href={resumeUrl} className={styles.ctaSecondary} target="_blank" rel="noopener noreferrer" eventName="resume_click" eventProperties={{ source: 'home_cta' }}>
+                  Resume
+                </TrackedLink>
+              )}
+            </div>
+          </FadeIn>
         </section>
       </Container>
     </div>

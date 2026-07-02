@@ -30,6 +30,8 @@ export async function getAllPostsWithSupabase(type: ContentType) {
         technologies: post.meta.technologies,
         issuer: post.meta.issuer,
         credential_url: post.meta.credentialUrl,
+        github: post.meta.github,
+        demo: post.meta.demo,
         type: supabaseType,
         source: 'mdx'
     }));
@@ -47,7 +49,6 @@ export async function getAllPostsWithSupabase(type: ContentType) {
             .order('date', { ascending: false });
 
         if (error) {
-            console.error('Error fetching Supabase posts:', error);
             return formattedMdxPosts;
         }
 
@@ -70,8 +71,7 @@ export async function getAllPostsWithSupabase(type: ContentType) {
 
         return allPosts;
 
-    } catch (err) {
-        console.error('Failed to fetch from Supabase:', err);
+    } catch {
         return formattedMdxPosts;
     }
 }

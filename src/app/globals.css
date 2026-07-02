@@ -42,6 +42,11 @@ body {
   overflow-x: hidden;
 }
 
+:where(a, button, input, textarea, select):focus-visible {
+  outline: 3px solid rgba(59, 130, 246, 0.6);
+  outline-offset: 3px;
+}
+
 /* === EasyMDE Overrides === */
 .editor-toolbar button {
   color: #64748b !important; /* Make icons visible (slate-500) */

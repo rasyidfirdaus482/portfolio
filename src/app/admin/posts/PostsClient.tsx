@@ -16,6 +16,7 @@ export function PostsClient({ initialPosts }: { initialPosts: PostRow[] }) {
     const [posts, setPosts] = useState<PostRow[]>(initialPosts);
     const [loading, setLoading] = useState(false);
     const [filter, setFilter] = useState<string>('all');
+    const [postToDelete, setPostToDelete] = useState<PostRow | null>(null);
     const router = useRouter();
 
     const fetchPosts = async (currentFilter: string) => {
@@ -38,9 +39,9 @@ export function PostsClient({ initialPosts }: { initialPosts: PostRow[] }) {
     };
 
     const handleDelete = async (id: string) => {
-        if (!confirm('Are you sure you want to delete this post?')) return;
         setLoading(true);
         await fetch(`/api/posts/${id}`, { method: 'DELETE' });
+        setPostToDelete(null);
         await fetchPosts(filter);
     };
 
@@ -120,7 +121,7 @@ export function PostsClient({ initialPosts }: { initialPosts: PostRow[] }) {
                                         </button>
                                         <button
                                             className={`${styles.tableBtn} ${styles.tableBtnDanger}`}
-                                            onClick={() => handleDelete(post.id)}
+                                            onClick={() => setPostToDelete(post)}
                                         >
                                             Delete
                                         </button>
@@ -130,6 +131,25 @@ export function PostsClient({ initialPosts }: { initialPosts: PostRow[] }) {
                         ))}
                     </tbody>
                 </table>
+            )}
+
+            {postToDelete && (
+                <div className={styles.modalOverlay} role="presentation" onClick={() => setPostToDelete(null)}>
+                    <div className={styles.confirmModal} role="dialog" aria-modal="true" aria-labelledby="delete-title" onClick={(event) => event.stopPropagation()}>
+                        <h2 id="delete-title" className={styles.confirmTitle}>Delete post?</h2>
+                        <p className={styles.confirmText}>
+                            This will permanently delete <strong>{postToDelete.title}</strong>.
+                        </p>
+                        <div className={styles.confirmActions}>
+                            <button className={styles.tableBtn} onClick={() => setPostToDelete(null)}>
+                                Cancel
+                            </button>
+                            <button className={`${styles.tableBtn} ${styles.tableBtnDanger}`} onClick={() => handleDelete(postToDelete.id)} disabled={loading}>
+                                {loading ? 'Deleting...' : 'Delete'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
             )}
         </div>
     );

@@ -23,15 +23,22 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     if (!post) return { title: 'Not Found' };
 
     const ogImageUrl = `/api/og?title=${encodeURIComponent(post.title)}&subtitle=${encodeURIComponent(post.excerpt || 'Blog Post')}`;
+    const canonical = `/blog/${resolvedParams.slug}`;
 
     return {
-        title: `${post.title} — Rasyid Firdaus`,
+        title: `${post.title} - Rasyid Firdaus`,
         description: post.excerpt || '',
+        alternates: {
+            canonical,
+        },
         openGraph: {
             title: post.title,
             description: post.excerpt || '',
             type: 'article',
+            url: canonical,
             publishedTime: post.date,
+            modifiedTime: post.date,
+            authors: ['Rasyid Firdaus Harmaini'],
             images: [{ url: ogImageUrl, width: 1200, height: 630 }],
         },
         twitter: {
@@ -52,7 +59,9 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
         '@context': 'https://schema.org',
         '@type': 'BlogPosting',
         headline: post.title,
+        url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://rasyidfirdaus.vercel.app'}/blog/${resolvedParams.slug}`,
         datePublished: post.date,
+        dateModified: post.date,
         author: {
             '@type': 'Person',
             name: 'Rasyid Firdaus Harmaini',
@@ -62,35 +71,35 @@ export default async function BlogPost({ params }: { params: Promise<{ slug: str
 
     return (
         <>
-        <ReadingProgress />
-        <Container className={styles.container}>
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-            />
-            <Breadcrumbs items={[
-                { label: 'Blog', href: '/blog' },
-                { label: post.title },
-            ]} />
-            <header className={styles.header}>
-                <h1 className={styles.title}>{post.title}</h1>
-                <div className={styles.metaInfo}>
-                    <p>{post.date}</p>
-                    <span>•</span>
-                    <p>{post.readingTime}</p>
+            <ReadingProgress />
+            <Container className={styles.container}>
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+                />
+                <Breadcrumbs items={[
+                    { label: 'Blog', href: '/blog' },
+                    { label: post.title },
+                ]} />
+                <header className={styles.header}>
+                    <h1 className={styles.title}>{post.title}</h1>
+                    <div className={styles.metaInfo}>
+                        <p>{post.date}</p>
+                        <span>-</span>
+                        <p>{post.readingTime}</p>
+                    </div>
+                </header>
+
+                <div className={styles.contentLayout}>
+                    <div className={styles.mainContent}>
+                        <MDXRenderer source={post.content} />
+                        <ShareButton title={post.title} />
+                    </div>
+                    <aside className={styles.sidebar}>
+                        <TableOfContents />
+                    </aside>
                 </div>
-            </header>
-            
-            <div className={styles.contentLayout}>
-                <div className={styles.mainContent}>
-                    <MDXRenderer source={post.content} />
-                    <ShareButton title={post.title} />
-                </div>
-                <aside className={styles.sidebar}>
-                    <TableOfContents />
-                </aside>
-            </div>
-        </Container>
+            </Container>
         </>
     );
 }

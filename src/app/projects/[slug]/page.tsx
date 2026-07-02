@@ -3,7 +3,7 @@ import { getPostWithSupabase } from "@/lib/posts";
 import { Container } from "@/components/layout/Container/Container";
 import { MDXRenderer } from "@/components/ui/MDXRenderer/MDXRenderer";
 import { Badge } from "@/components/ui/Badge/Badge";
-import { Button } from "@/components/ui/Button/Button";
+import { TrackedButton } from "@/components/ui/TrackedButton/TrackedButton";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs/Breadcrumbs";
 import { ShareButton } from "@/components/ui/ShareButton/ShareButton";
 import { notFound } from "next/navigation";
@@ -23,14 +23,21 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     if (!project) return { title: 'Not Found' };
 
     const ogImageUrl = `/api/og?title=${encodeURIComponent(project.title)}&subtitle=${encodeURIComponent(project.excerpt || 'Project')}`;
+    const canonical = `/projects/${resolvedParams.slug}`;
 
     return {
-        title: `${project.title} — Rasyid Firdaus`,
+        title: `${project.title} - Rasyid Firdaus`,
         description: project.excerpt || '',
+        alternates: {
+            canonical,
+        },
         openGraph: {
             title: project.title,
             description: project.excerpt || '',
             type: 'article',
+            url: canonical,
+            publishedTime: project.date,
+            authors: ['Rasyid Firdaus Harmaini'],
             images: [{ url: ogImageUrl, width: 1200, height: 630 }],
         },
         twitter: {
@@ -41,6 +48,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         },
     };
 }
+
 export default async function ProjectPost({ params }: { params: Promise<{ slug: string }> }) {
     const resolvedParams = await params;
     const project = await getPostWithSupabase('projects', resolvedParams.slug);
@@ -50,11 +58,13 @@ export default async function ProjectPost({ params }: { params: Promise<{ slug: 
         '@context': 'https://schema.org',
         '@type': 'CreativeWork',
         name: project.title,
+        url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://rasyidfirdaus.vercel.app'}/projects/${resolvedParams.slug}`,
         author: {
             '@type': 'Person',
             name: 'Rasyid Firdaus Harmaini',
         },
         description: project.excerpt || '',
+        datePublished: project.date,
     };
 
     return (
@@ -78,10 +88,14 @@ export default async function ProjectPost({ params }: { params: Promise<{ slug: 
                 )}
                 <div className={styles.links}>
                     {project.github && (
-                        <Button href={project.github} target="_blank" rel="noopener noreferrer" variant="outline">View Source Code</Button>
+                        <TrackedButton href={project.github} target="_blank" rel="noopener noreferrer" variant="outline" eventName="project_github_click" eventProperties={{ source: 'project_detail', slug: project.slug }}>
+                            View Source Code
+                        </TrackedButton>
                     )}
                     {project.demo && (
-                        <Button href={project.demo} target="_blank" rel="noopener noreferrer" variant="primary">Live Demo</Button>
+                        <TrackedButton href={project.demo} target="_blank" rel="noopener noreferrer" variant="primary" eventName="project_visit_click" eventProperties={{ source: 'project_detail', slug: project.slug }}>
+                            Live Demo
+                        </TrackedButton>
                     )}
                 </div>
             </header>

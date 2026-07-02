@@ -55,7 +55,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className={`${geistSans.variable} ${geistMono.variable}`} suppressHydrationWarning>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -66,6 +66,11 @@ export default function RootLayout({
               url: process.env.NEXT_PUBLIC_SITE_URL || 'https://rasyidfirdaus.vercel.app',
               jobTitle: 'Multidisciplinary Engineer',
               knowsAbout: ['Web Development', 'Data Science', 'Machine Learning', 'Cybersecurity', 'Networking'],
+              sameAs: [
+                'https://github.com/rasyidfirdaus482',
+                'https://linkedin.com/in/rasyidfirdaus',
+              ],
+              email: 'mailto:rasyidfirdaus53@gmail.com',
             }),
           }}
         />

@@ -63,6 +63,8 @@ export async function getHybridPosts(type: ContentType): Promise<HybridPost[]> {
                         technologies: post.technologies,
                         issuer: post.issuer,
                         credentialUrl: post.credential_url,
+                        github: post.github,
+                        demo: post.demo,
                         cover_image: post.cover_image,
                     },
                     content: post.content || '',

@@ -12,7 +12,7 @@ const SimpleMDE = dynamic(() => import('react-simplemde-editor'), { ssr: false }
 
 const typeFields: Record<string, string[]> = {
     blog: ['category'],
-    project: ['category', 'technologies'],
+    project: ['category', 'technologies', 'github', 'demo'],
     certificate: ['issuer', 'credential_url'],
 };
 
@@ -31,6 +31,8 @@ export default function NewPostPage() {
         technologies: '',
         issuer: '',
         credential_url: '',
+        github: '',
+        demo: '',
         date: new Date().toISOString().split('T')[0],
         published: false,
         cover_image: '',
@@ -238,6 +240,20 @@ export default function NewPostPage() {
                     </div>
                 )}
 
+                {extraFields.includes('github') && (
+                    <div className={styles.editorFormGroup}>
+                        <label className={styles.editorLabel}>GitHub Repository</label>
+                        <input name="github" type="url" value={form.github} onChange={handleChange} className={styles.editorInput} placeholder="https://github.com/username/repo" />
+                    </div>
+                )}
+
+                {extraFields.includes('demo') && (
+                    <div className={styles.editorFormGroup}>
+                        <label className={styles.editorLabel}>Live Project URL</label>
+                        <input name="demo" type="url" value={form.demo} onChange={handleChange} className={styles.editorInput} placeholder="https://example.com" />
+                    </div>
+                )}
+
                 {extraFields.includes('issuer') && (
                     <div className={styles.editorFormGroup}>
                         <label className={styles.editorLabel}>Issuer</label>
@@ -248,7 +264,7 @@ export default function NewPostPage() {
                 {extraFields.includes('credential_url') && (
                     <div className={styles.editorFormGroup}>
                         <label className={styles.editorLabel}>Credential URL</label>
-                        <input name="credential_url" value={form.credential_url} onChange={handleChange} className={styles.editorInput} placeholder="https://..." />
+                        <input name="credential_url" type="url" value={form.credential_url} onChange={handleChange} className={styles.editorInput} placeholder="https://..." />
                     </div>
                 )}
 

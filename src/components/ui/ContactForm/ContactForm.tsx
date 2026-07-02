@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Button } from '../Button/Button';
+import { trackEvent } from '@/lib/analytics';
 import styles from './ContactForm.module.css';
 
 export const ContactForm = () => {
@@ -9,6 +10,7 @@ export const ContactForm = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    trackEvent('contact_submit');
     setStatus('submitting');
     
     // Simulate API call for now until Formspree URL is provided

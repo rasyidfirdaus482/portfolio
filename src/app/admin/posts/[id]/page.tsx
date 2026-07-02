@@ -25,6 +25,8 @@ export default function EditPostPage() {
         technologies: '',
         issuer: '',
         credential_url: '',
+        github: '',
+        demo: '',
         date: '',
         published: false,
         cover_image: '',
@@ -53,6 +55,8 @@ export default function EditPostPage() {
                     technologies: Array.isArray(data.technologies) ? data.technologies.join(', ') : '',
                     issuer: data.issuer || '',
                     credential_url: data.credential_url || '',
+                    github: data.github || '',
+                    demo: data.demo || '',
                     date: data.date || '',
                     published: data.published || false,
                     cover_image: data.cover_image || '',
@@ -213,6 +217,14 @@ export default function EditPostPage() {
                             <label className={styles.editorLabel}>Technologies (comma separated)</label>
                             <input name="technologies" value={form.technologies} onChange={handleChange} className={styles.editorInput} />
                         </div>
+                        <div className={styles.editorFormGroup}>
+                            <label className={styles.editorLabel}>GitHub Repository</label>
+                            <input name="github" type="url" value={form.github} onChange={handleChange} className={styles.editorInput} placeholder="https://github.com/username/repo" />
+                        </div>
+                        <div className={styles.editorFormGroup}>
+                            <label className={styles.editorLabel}>Live Project URL</label>
+                            <input name="demo" type="url" value={form.demo} onChange={handleChange} className={styles.editorInput} placeholder="https://example.com" />
+                        </div>
                     </>
                 )}
                 {form.type === 'certificate' && (
@@ -223,7 +235,7 @@ export default function EditPostPage() {
                         </div>
                         <div className={styles.editorFormGroup}>
                             <label className={styles.editorLabel}>Credential URL</label>
-                            <input name="credential_url" value={form.credential_url} onChange={handleChange} className={styles.editorInput} />
+                            <input name="credential_url" type="url" value={form.credential_url} onChange={handleChange} className={styles.editorInput} />
                         </div>
                     </>
                 )}

@@ -21,6 +21,8 @@ export interface Database {
           technologies: string[] | null
           issuer: string | null
           credential_url: string | null
+          github: string | null
+          demo: string | null
           date: string
           published: boolean
           cover_image: string | null
@@ -38,6 +40,8 @@ export interface Database {
           technologies?: string[] | null
           issuer?: string | null
           credential_url?: string | null
+          github?: string | null
+          demo?: string | null
           date?: string
           published?: boolean
           cover_image?: string | null
@@ -55,6 +59,8 @@ export interface Database {
           technologies?: string[] | null
           issuer?: string | null
           credential_url?: string | null
+          github?: string | null
+          demo?: string | null
           date?: string
           published?: boolean
           cover_image?: string | null

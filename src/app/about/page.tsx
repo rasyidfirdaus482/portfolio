@@ -5,6 +5,16 @@ import { Badge } from "@/components/ui/Badge/Badge";
 import { FadeIn } from "@/components/ui/FadeIn/FadeIn";
 import { ContactForm } from "@/components/ui/ContactForm/ContactForm";
 import Image from "next/image";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About — Rasyid Firdaus Harmaini",
+  description: "About Rasyid Firdaus Harmaini, a multidisciplinary engineer working across web development, data, AI, infrastructure, and security.",
+  openGraph: {
+    title: "About — Rasyid Firdaus Harmaini",
+    description: "A multidisciplinary engineer working across web development, data, AI, infrastructure, and security.",
+  },
+};
 
 export default function AboutPage() {
   return (
@@ -104,6 +114,32 @@ export default function AboutPage() {
                     </FadeIn>
                 ))}
                 </div>
+            </div>
+          </FadeIn>
+          <FadeIn delay={0.8}>
+            <h2>Experience Focus</h2>
+            <div className={styles.experienceList}>
+              <div className={styles.experienceItem}>
+                <span className={styles.experienceDate}>Current</span>
+                <div>
+                  <h3>Portfolio, Web Apps, and Content Systems</h3>
+                  <p>Building Next.js applications with MDX content, admin workflows, reusable UI components, and SEO-ready publishing.</p>
+                </div>
+              </div>
+              <div className={styles.experienceItem}>
+                <span className={styles.experienceDate}>Focus</span>
+                <div>
+                  <h3>Infrastructure and Security Practice</h3>
+                  <p>Working with Linux servers, networking fundamentals, security audits, and practical hardening workflows.</p>
+                </div>
+              </div>
+              <div className={styles.experienceItem}>
+                <span className={styles.experienceDate}>Focus</span>
+                <div>
+                  <h3>Data and Machine Learning</h3>
+                  <p>Exploring applied data analysis and machine learning workflows using Python, Pandas, and Scikit-learn.</p>
+                </div>
+              </div>
             </div>
           </FadeIn>
           <FadeIn delay={0.9}>

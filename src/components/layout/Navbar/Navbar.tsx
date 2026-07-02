@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Container } from '../Container/Container';
 import { ThemeToggle } from '../../ui/ThemeToggle/ThemeToggle';
+import { TrackedLink } from '@/components/ui/TrackedLink/TrackedLink';
 import styles from './Navbar.module.css';
 
 const navItems = [
@@ -13,7 +14,7 @@ const navItems = [
     { href: '/about', label: 'About' },
 ];
 
-const resumeUrl = process.env.NEXT_PUBLIC_RESUME_URL;
+const fallbackResumeUrl = process.env.NEXT_PUBLIC_RESUME_URL || '';
 
 export const Navbar: React.FC = () => {
     const [menuState, setMenuState] = useState<{ isOpen: boolean; pathname: string | null }>({
@@ -21,6 +22,7 @@ export const Navbar: React.FC = () => {
         pathname: null,
     });
     const [scrolled, setScrolled] = useState(false);
+    const [resumeUrl, setResumeUrl] = useState(fallbackResumeUrl);
     const pathname = usePathname();
     const isAdmin = pathname?.startsWith('/admin');
     const isOpen = menuState.pathname === pathname ? menuState.isOpen : false;
@@ -59,6 +61,21 @@ export const Navbar: React.FC = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, [isAdmin]);
 
+    useEffect(() => {
+        if (isAdmin) return;
+
+        fetch('/api/settings/resume')
+            .then(res => res.json())
+            .then(data => {
+                if (typeof data.resumeUrl === 'string') {
+                    setResumeUrl(data.resumeUrl);
+                }
+            })
+            .catch(() => {
+                // Keep the env fallback if settings are unavailable.
+            });
+    }, [isAdmin]);
+
     // Hide navbar on admin pages (AFTER all hooks)
     if (isAdmin) return null;
 
@@ -92,15 +109,17 @@ export const Navbar: React.FC = () => {
                                 </Link>
                             ))}
                             {resumeUrl && (
-                                <a
+                                <TrackedLink
                                     href={resumeUrl}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className={styles.resumeBtn}
                                     style={{ animationDelay: isOpen ? `${navItems.length * 0.06}s` : '0s' }}
+                                    eventName="resume_click"
+                                    eventProperties={{ source: 'navbar' }}
                                 >
                                     Resume
-                                </a>
+                                </TrackedLink>
                             )}
                         </div>
 

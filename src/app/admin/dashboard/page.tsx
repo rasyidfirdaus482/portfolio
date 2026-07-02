@@ -54,6 +54,9 @@ export default async function DashboardPage() {
                 <Link href="/admin/posts/new?type=certificate" className={styles.actionBtn}>
                     + New Certificate
                 </Link>
+                <Link href="/admin/settings" className={styles.actionBtn}>
+                    Settings
+                </Link>
             </div>
         </div>
     );
