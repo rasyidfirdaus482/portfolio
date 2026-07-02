@@ -74,9 +74,7 @@
     display: flex;
     align-items: stretch;
     padding: 0;
-    background:
-        linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(15, 118, 110, 0.82)),
-        repeating-linear-gradient(0deg, transparent 0 24px, rgba(45, 212, 191, 0.08) 24px 25px);
+    background-color: #0f172a;
     color: #fff;
 }
 
@@ -313,7 +311,7 @@
     width: 40px;
     height: 40px;
     border-radius: 10px;
-    background: linear-gradient(135deg, rgba(8, 145, 178, 0.1), rgba(16, 185, 129, 0.1));
+    background: rgba(8, 145, 178, 0.1);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -322,7 +320,7 @@
 }
 
 :global(.dark) .certIcon {
-    background: linear-gradient(135deg, rgba(8, 145, 178, 0.18), rgba(16, 185, 129, 0.12));
+    background: rgba(8, 145, 178, 0.18);
 }
 
 .certTitle {
