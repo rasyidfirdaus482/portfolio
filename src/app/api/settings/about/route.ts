@@ -12,6 +12,14 @@ const schema = z.object({
     email: z.string().trim().optional().default(''),
     intro1: z.string().trim().min(1),
     intro2: z.string().trim().min(1),
+    softwareSkills: z.array(z.string().trim().min(1)).default([]),
+    dataSkills: z.array(z.string().trim().min(1)).default([]),
+    securitySkills: z.array(z.string().trim().min(1)).default([]),
+    experiences: z.array(z.object({
+        label: z.string().trim().min(1),
+        title: z.string().trim().min(1),
+        description: z.string().trim().min(1),
+    })).default([]),
 });
 
 function isValidEditableUrl(value: string) {

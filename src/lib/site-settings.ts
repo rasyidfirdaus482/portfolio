@@ -12,6 +12,14 @@ type AboutProfile = {
     email: string;
     intro1: string;
     intro2: string;
+    softwareSkills: string[];
+    dataSkills: string[];
+    securitySkills: string[];
+    experiences: Array<{
+        label: string;
+        title: string;
+        description: string;
+    }>;
 };
 
 const defaultAboutProfile: AboutProfile = {
@@ -23,6 +31,26 @@ const defaultAboutProfile: AboutProfile = {
     email: 'mailto:rasyidfirdaus53@gmail.com',
     intro1: "Hello! I'm Rasyid Firdaus Harmaini, a multidisciplinary engineer who thrives at the intersection of software development, artificial intelligence, and cybersecurity. My journey didn't just stop at building responsive web applications; it evolved into securing the underlying infrastructure and crunching data to train machine learning models.",
     intro2: 'I believe that a truly robust system requires a holistic understanding - from designing intuitive frontends with React to configuring secure Ubuntu servers, and running penetration testing to fortify digital perimeters.',
+    softwareSkills: ['JavaScript', 'TypeScript', 'React', 'Next.js', 'Node.js'],
+    dataSkills: ['Python', 'Machine Learning', 'Data Science', 'Pandas', 'Scikit-learn'],
+    securitySkills: ['Ubuntu Server', 'Networking', 'Penetration Testing', 'Security Audit'],
+    experiences: [
+        {
+            label: 'Current',
+            title: 'Portfolio, Web Apps, and Content Systems',
+            description: 'Building Next.js applications with MDX content, admin workflows, reusable UI components, and SEO-ready publishing.',
+        },
+        {
+            label: 'Focus',
+            title: 'Infrastructure and Security Practice',
+            description: 'Working with Linux servers, networking fundamentals, security audits, and practical hardening workflows.',
+        },
+        {
+            label: 'Focus',
+            title: 'Data and Machine Learning',
+            description: 'Exploring applied data analysis and machine learning workflows using Python, Pandas, and Scikit-learn.',
+        },
+    ],
 };
 
 async function getSiteSettingValue(key: string, fallback = '') {

@@ -12,6 +12,14 @@ type AboutProfile = {
     email: string;
     intro1: string;
     intro2: string;
+    softwareSkills: string[];
+    dataSkills: string[];
+    securitySkills: string[];
+    experiences: Array<{
+        label: string;
+        title: string;
+        description: string;
+    }>;
 };
 
 const defaultAbout: AboutProfile = {
@@ -23,7 +31,35 @@ const defaultAbout: AboutProfile = {
     email: 'mailto:rasyidfirdaus53@gmail.com',
     intro1: '',
     intro2: '',
+    softwareSkills: [],
+    dataSkills: [],
+    securitySkills: [],
+    experiences: [],
 };
+
+function parseCsv(value: string) {
+    return value.split(',').map(item => item.trim()).filter(Boolean);
+}
+
+function formatCsv(value: string[]) {
+    return value.join(', ');
+}
+
+function parseExperiences(value: string) {
+    return value
+        .split('\n')
+        .map(line => line.trim())
+        .filter(Boolean)
+        .map(line => {
+            const [label = '', title = '', description = ''] = line.split('|').map(part => part.trim());
+            return { label, title, description };
+        })
+        .filter(item => item.label && item.title && item.description);
+}
+
+function formatExperiences(value: AboutProfile['experiences']) {
+    return value.map(item => `${item.label} | ${item.title} | ${item.description}`).join('\n');
+}
 
 export function AboutSettings() {
     const [form, setForm] = useState<AboutProfile>(defaultAbout);
@@ -32,11 +68,22 @@ export function AboutSettings() {
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const [softwareSkillsInput, setSoftwareSkillsInput] = useState('');
+    const [dataSkillsInput, setDataSkillsInput] = useState('');
+    const [securitySkillsInput, setSecuritySkillsInput] = useState('');
+    const [experiencesInput, setExperiencesInput] = useState('');
 
     useEffect(() => {
         fetch('/api/settings/about')
             .then(res => res.json())
-            .then(data => setForm((prev) => ({ ...prev, ...(data.about || {}) })))
+            .then(data => {
+                const about = { ...defaultAbout, ...(data.about || {}) };
+                setForm(about);
+                setSoftwareSkillsInput(formatCsv(about.softwareSkills));
+                setDataSkillsInput(formatCsv(about.dataSkills));
+                setSecuritySkillsInput(formatCsv(about.securitySkills));
+                setExperiencesInput(formatExperiences(about.experiences));
+            })
             .catch(() => setError('Failed to load about settings'))
             .finally(() => setLoading(false));
     }, []);
@@ -45,12 +92,19 @@ export function AboutSettings() {
         setSaving(true);
         setMessage('');
         setError('');
+        const payload = {
+            ...nextForm,
+            softwareSkills: parseCsv(softwareSkillsInput),
+            dataSkills: parseCsv(dataSkillsInput),
+            securitySkills: parseCsv(securitySkillsInput),
+            experiences: parseExperiences(experiencesInput),
+        };
 
         try {
             const res = await fetch('/api/settings/about', {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(nextForm),
+                body: JSON.stringify(payload),
             });
             const data = await res.json();
 
@@ -157,6 +211,22 @@ export function AboutSettings() {
                 <div className={styles.editorFormGroup}>
                     <label className={styles.editorLabel}>Intro Paragraph 2</label>
                     <textarea className={styles.editorTextarea} rows={4} value={form.intro2} onChange={(e) => setForm(prev => ({ ...prev, intro2: e.target.value }))} disabled={loading || saving} />
+                </div>
+                <div className={styles.editorFormGroup}>
+                    <label className={styles.editorLabel}>Software Skills</label>
+                    <textarea className={styles.editorTextarea} rows={3} value={softwareSkillsInput} onChange={(e) => setSoftwareSkillsInput(e.target.value)} disabled={loading || saving} placeholder="JavaScript, TypeScript, React" />
+                </div>
+                <div className={styles.editorFormGroup}>
+                    <label className={styles.editorLabel}>Data Skills</label>
+                    <textarea className={styles.editorTextarea} rows={3} value={dataSkillsInput} onChange={(e) => setDataSkillsInput(e.target.value)} disabled={loading || saving} placeholder="Python, Machine Learning, Pandas" />
+                </div>
+                <div className={styles.editorFormGroup}>
+                    <label className={styles.editorLabel}>Infrastructure & Security Skills</label>
+                    <textarea className={styles.editorTextarea} rows={3} value={securitySkillsInput} onChange={(e) => setSecuritySkillsInput(e.target.value)} disabled={loading || saving} placeholder="Ubuntu Server, Networking, Security Audit" />
+                </div>
+                <div className={styles.editorFormGroup}>
+                    <label className={styles.editorLabel}>Experience</label>
+                    <textarea className={styles.editorTextarea} rows={6} value={experiencesInput} onChange={(e) => setExperiencesInput(e.target.value)} disabled={loading || saving} placeholder="Current | Portfolio, Web Apps, and Content Systems | Building Next.js applications..." />
                 </div>
             </div>
 

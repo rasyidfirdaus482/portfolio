@@ -16,10 +16,6 @@ export const metadata: Metadata = {
   },
 };
 
-const softwareSkills = ["JavaScript", "TypeScript", "React", "Next.js", "Node.js"];
-const dataSkills = ["Python", "Machine Learning", "Data Science", "Pandas", "Scikit-learn"];
-const securitySkills = ["Ubuntu Server", "Networking", "Penetration Testing", "Security Audit"];
-
 export default async function AboutPage() {
   const profile = await getAboutProfile();
 
@@ -75,7 +71,7 @@ export default async function AboutPage() {
                 </div>
                 <h3>Software Engineering</h3>
                 <div className={styles.skills}>
-                {softwareSkills.map((skill, index) => (
+                {profile.softwareSkills.map((skill, index) => (
                     <FadeIn key={skill} delay={0.5 + (index * 0.05)} direction="left">
                     <Badge className={styles.skillBadge}>{skill}</Badge>
                     </FadeIn>
@@ -89,7 +85,7 @@ export default async function AboutPage() {
                 </div>
                 <h3>Data & AI</h3>
                 <div className={styles.skills}>
-                {dataSkills.map((skill, index) => (
+                {profile.dataSkills.map((skill, index) => (
                     <FadeIn key={skill} delay={0.6 + (index * 0.05)} direction="left">
                     <Badge className={styles.skillBadge}>{skill}</Badge>
                     </FadeIn>
@@ -103,7 +99,7 @@ export default async function AboutPage() {
                 </div>
                 <h3>Infrastructure & Security</h3>
                 <div className={styles.skills}>
-                {securitySkills.map((skill, index) => (
+                {profile.securitySkills.map((skill, index) => (
                     <FadeIn key={skill} delay={0.7 + (index * 0.05)} direction="left">
                     <Badge className={styles.skillBadge}>{skill}</Badge>
                     </FadeIn>
@@ -114,27 +110,15 @@ export default async function AboutPage() {
           <FadeIn delay={0.8}>
             <h2>Experience Focus</h2>
             <div className={styles.experienceList}>
-              <div className={styles.experienceItem}>
-                <span className={styles.experienceDate}>Current</span>
-                <div>
-                  <h3>Portfolio, Web Apps, and Content Systems</h3>
-                  <p>Building Next.js applications with MDX content, admin workflows, reusable UI components, and SEO-ready publishing.</p>
+              {profile.experiences.map((experience) => (
+                <div className={styles.experienceItem} key={`${experience.label}-${experience.title}`}>
+                  <span className={styles.experienceDate}>{experience.label}</span>
+                  <div>
+                    <h3>{experience.title}</h3>
+                    <p>{experience.description}</p>
+                  </div>
                 </div>
-              </div>
-              <div className={styles.experienceItem}>
-                <span className={styles.experienceDate}>Focus</span>
-                <div>
-                  <h3>Infrastructure and Security Practice</h3>
-                  <p>Working with Linux servers, networking fundamentals, security audits, and practical hardening workflows.</p>
-                </div>
-              </div>
-              <div className={styles.experienceItem}>
-                <span className={styles.experienceDate}>Focus</span>
-                <div>
-                  <h3>Data and Machine Learning</h3>
-                  <p>Exploring applied data analysis and machine learning workflows using Python, Pandas, and Scikit-learn.</p>
-                </div>
-              </div>
+              ))}
             </div>
           </FadeIn>
           <FadeIn delay={0.9}>

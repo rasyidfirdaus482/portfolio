@@ -7,6 +7,7 @@ import { TrackedButton } from "@/components/ui/TrackedButton/TrackedButton";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs/Breadcrumbs";
 import { ShareButton } from "@/components/ui/ShareButton/ShareButton";
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import type { Metadata } from "next";
 import styles from "./page.module.css";
 
@@ -77,30 +78,64 @@ export default async function ProjectPost({ params }: { params: Promise<{ slug: 
                 { label: 'Projects', href: '/projects' },
                 { label: project.title },
             ]} />
-            <header className={styles.header}>
-                <h1 className={styles.title}>{project.title}</h1>
-                {project.technologies && (
-                    <div className={styles.techStack}>
-                        {project.technologies.map((tech: string) => (
-                            <Badge key={tech}>{tech}</Badge>
-                        ))}
+            <header className={styles.hero}>
+                <div className={styles.heroContent}>
+                    <p className={styles.eyebrow}>{project.category || 'Project Case Study'}</p>
+                    <h1 className={styles.title}>{project.title}</h1>
+                    {project.excerpt && <p className={styles.excerpt}>{project.excerpt}</p>}
+                    {project.technologies && (
+                        <div className={styles.techStack}>
+                            {project.technologies.map((tech: string) => (
+                                <Badge key={tech}>{tech}</Badge>
+                            ))}
+                        </div>
+                    )}
+                    <div className={styles.links}>
+                        {project.github && (
+                            <TrackedButton href={project.github} target="_blank" rel="noopener noreferrer" variant="outline" eventName="project_github_click" eventProperties={{ source: 'project_detail', slug: project.slug }}>
+                                View Source Code
+                            </TrackedButton>
+                        )}
+                        {project.demo && (
+                            <TrackedButton href={project.demo} target="_blank" rel="noopener noreferrer" variant="primary" eventName="project_visit_click" eventProperties={{ source: 'project_detail', slug: project.slug }}>
+                                Live Demo
+                            </TrackedButton>
+                        )}
                     </div>
-                )}
-                <div className={styles.links}>
-                    {project.github && (
-                        <TrackedButton href={project.github} target="_blank" rel="noopener noreferrer" variant="outline" eventName="project_github_click" eventProperties={{ source: 'project_detail', slug: project.slug }}>
-                            View Source Code
-                        </TrackedButton>
-                    )}
-                    {project.demo && (
-                        <TrackedButton href={project.demo} target="_blank" rel="noopener noreferrer" variant="primary" eventName="project_visit_click" eventProperties={{ source: 'project_detail', slug: project.slug }}>
-                            Live Demo
-                        </TrackedButton>
-                    )}
                 </div>
+
+                <aside className={styles.summary}>
+                    <div>
+                        <span className={styles.summaryLabel}>Role</span>
+                        <strong>Builder / Engineer</strong>
+                    </div>
+                    <div>
+                        <span className={styles.summaryLabel}>Published</span>
+                        <strong>{project.date}</strong>
+                    </div>
+                    <div>
+                        <span className={styles.summaryLabel}>Status</span>
+                        <strong>{project.demo ? 'Live' : project.github ? 'Source available' : 'Case study'}</strong>
+                    </div>
+                </aside>
             </header>
-            <MDXRenderer source={project.content} />
-            <ShareButton title={project.title} />
+
+            {project.cover_image && (
+                <div className={styles.coverWrap}>
+                    <Image src={project.cover_image} alt={project.title} width={1200} height={675} className={styles.coverImage} priority />
+                </div>
+            )}
+
+            <section className={styles.caseStudyLayout}>
+                <aside className={styles.caseAside}>
+                    <p className={styles.caseAsideTitle}>Case Study</p>
+                    <p className={styles.caseAsideText}>Problem, solution, implementation notes, and outcomes from this project.</p>
+                </aside>
+                <div>
+                    <MDXRenderer source={project.content} />
+                    <ShareButton title={project.title} />
+                </div>
+            </section>
         </Container>
     );
 }

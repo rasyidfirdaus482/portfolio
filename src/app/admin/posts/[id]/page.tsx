@@ -158,6 +158,15 @@ export default function EditPostPage() {
             <div className={styles.editorHeader}>
                 <h1 className={styles.editorTitle}>Edit Post</h1>
                 <div className={styles.editorActions}>
+                    {form.slug && form.type !== 'certificate' && (
+                        <button
+                            type="button"
+                            className={styles.tableBtn}
+                            onClick={() => window.open(`/${form.type === 'project' ? 'projects' : 'blog'}/${form.slug}`, '_blank', 'noopener,noreferrer')}
+                        >
+                            View Public
+                        </button>
+                    )}
                     <button className={styles.saveBtn} onClick={() => handleSave()} disabled={saving}>
                         {saving ? 'Saving...' : 'Save'}
                     </button>

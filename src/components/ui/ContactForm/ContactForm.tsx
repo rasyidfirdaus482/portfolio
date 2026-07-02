@@ -12,23 +12,23 @@ export const ContactForm = () => {
     e.preventDefault();
     trackEvent('contact_submit');
     setStatus('submitting');
-    
-    // Simulate API call for now until Formspree URL is provided
-    setTimeout(() => {
-        setStatus('success');
-        // e.currentTarget.reset();
-    }, 1500);
 
-    /* 
-    Formspree implementation:
     const form = e.currentTarget;
     const data = new FormData(form);
+
     try {
-      const response = await fetch("YOUR_FORMSPREE_ENDPOINT", {
+      const response = await fetch('/api/contact', {
         method: "POST",
-        body: data,
-        headers: { 'Accept': 'application/json' }
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: data.get('name'),
+          email: data.get('email'),
+          message: data.get('message'),
+        }),
       });
+
       if (response.ok) {
         setStatus('success');
         form.reset();
@@ -38,7 +38,6 @@ export const ContactForm = () => {
     } catch (error) {
       setStatus('error');
     }
-    */
   };
 
   return (

@@ -10,11 +10,18 @@ export default async function DashboardPage() {
     const supabase = await createClient();
     const { data: dbPosts } = await supabase.from('posts').select('*');
     const posts: PostRow[] = dbPosts || [];
+    const { data: messages } = await supabase
+        .from('contact_messages')
+        .select('id,name,email,message,created_at,read')
+        .order('created_at', { ascending: false })
+        .limit(5);
 
     const blogCount = posts.filter(p => p.type === 'blog').length;
     const projectCount = posts.filter(p => p.type === 'project').length;
     const certCount = posts.filter(p => p.type === 'certificate').length;
     const draftCount = posts.filter(p => !p.published).length;
+    const recentPosts = [...posts].sort((a, b) => new Date(b.updated_at || b.created_at).getTime() - new Date(a.updated_at || a.created_at).getTime()).slice(0, 5);
+    const unreadCount = (messages || []).filter(message => !message.read).length;
 
     return (
         <div>
@@ -42,6 +49,10 @@ export default async function DashboardPage() {
                     <p className={styles.statLabel}>Drafts</p>
                     <p className={styles.statValue}>{draftCount}</p>
                 </div>
+                <div className={styles.statCard}>
+                    <p className={styles.statLabel}>Unread Messages</p>
+                    <p className={styles.statValue}>{unreadCount}</p>
+                </div>
             </div>
 
             <div className={styles.quickActions}>
@@ -57,6 +68,51 @@ export default async function DashboardPage() {
                 <Link href="/admin/settings" className={styles.actionBtn}>
                     Settings
                 </Link>
+            </div>
+
+            <div className={styles.dashboardGrid}>
+                <section className={styles.panel}>
+                    <div className={styles.panelHeader}>
+                        <h2>Recent Content</h2>
+                        <Link href="/admin/posts" className={styles.panelLink}>Manage</Link>
+                    </div>
+                    {recentPosts.length > 0 ? (
+                        <div className={styles.compactList}>
+                            {recentPosts.map(post => (
+                                <Link key={post.id} href={`/admin/posts/${post.id}`} className={styles.compactItem}>
+                                    <span>
+                                        <strong>{post.title}</strong>
+                                        <small>{post.type} - {post.published ? 'Published' : 'Draft'}</small>
+                                    </span>
+                                    <small>{post.date}</small>
+                                </Link>
+                            ))}
+                        </div>
+                    ) : (
+                        <p className={styles.emptyState}>No content yet.</p>
+                    )}
+                </section>
+
+                <section className={styles.panel}>
+                    <div className={styles.panelHeader}>
+                        <h2>Recent Messages</h2>
+                    </div>
+                    {(messages || []).length > 0 ? (
+                        <div className={styles.compactList}>
+                            {(messages || []).map(message => (
+                                <div key={message.id} className={styles.compactItem}>
+                                    <span>
+                                        <strong>{message.name}</strong>
+                                        <small>{message.email}</small>
+                                        <small>{message.message}</small>
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <p className={styles.emptyState}>No messages yet.</p>
+                    )}
+                </section>
             </div>
         </div>
     );

@@ -7,6 +7,13 @@
     position: relative;
 }
 
+.heroGrid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+    gap: 3rem;
+    align-items: center;
+}
+
 .content {
     max-width: 800px;
     position: relative;
@@ -16,7 +23,7 @@
 .greeting {
     font-size: 1rem;
     font-weight: 500;
-    color: #3b82f6;
+    color: #0891b2;
     margin-bottom: 1rem;
     letter-spacing: 0.05em;
 }
@@ -33,7 +40,7 @@
 }
 
 .highlight {
-    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    background: linear-gradient(135deg, #0f766e, #0891b2 55%, #10b981);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -63,6 +70,90 @@
     flex-wrap: wrap;
 }
 
+.visual {
+    position: relative;
+    justify-self: end;
+    width: min(360px, 100%);
+}
+
+.portraitFrame {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: 28px;
+    overflow: hidden;
+    border: 1px solid rgba(8, 145, 178, 0.22);
+    background:
+        linear-gradient(145deg, rgba(8, 145, 178, 0.12), rgba(16, 185, 129, 0.08)),
+        rgba(255, 255, 255, 0.55);
+    box-shadow: 0 24px 80px rgba(15, 23, 42, 0.12);
+}
+
+.portraitFrame::before {
+    content: '';
+    position: absolute;
+    inset: 14px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 20px;
+    z-index: 1;
+    pointer-events: none;
+}
+
+:global(.dark) .portraitFrame {
+    background:
+        linear-gradient(145deg, rgba(8, 145, 178, 0.18), rgba(16, 185, 129, 0.1)),
+        rgba(255, 255, 255, 0.04);
+    border-color: rgba(20, 184, 166, 0.22);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.42);
+}
+
+:global(.dark) .portraitFrame::before {
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.portrait {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: saturate(0.92) contrast(1.02);
+}
+
+.signalPanel {
+    position: absolute;
+    left: -1rem;
+    bottom: 1.25rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    max-width: min(300px, calc(100vw - 3rem));
+    padding: 0.65rem 0.8rem;
+    border-radius: 10px;
+    border: 1px solid rgba(8, 145, 178, 0.22);
+    background: rgba(255, 255, 255, 0.84);
+    color: #0f172a;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    box-shadow: 0 14px 40px rgba(15, 23, 42, 0.12);
+    backdrop-filter: blur(16px);
+}
+
+:global(.dark) .signalPanel {
+    background: rgba(15, 23, 42, 0.82);
+    color: #ecfeff;
+    border-color: rgba(45, 212, 191, 0.2);
+}
+
+.signalDot {
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0.14);
+    flex: 0 0 auto;
+}
+
 .marqueeFullWidth {
     width: 100vw;
     margin-left: calc(-50vw + 50%);
@@ -78,10 +169,31 @@
         text-align: center;
     }
 
+    .heroGrid {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
     .content {
         display: flex;
         flex-direction: column;
         align-items: center;
+    }
+
+    .visual {
+        justify-self: center;
+        width: min(300px, 100%);
+        order: -1;
+    }
+
+    .signalPanel {
+        left: 50%;
+        bottom: -0.75rem;
+        transform: translateX(-50%);
+        white-space: normal;
+        justify-content: center;
+        text-align: left;
     }
 
     .greeting {

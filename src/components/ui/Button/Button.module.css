@@ -23,12 +23,13 @@
 
 /* Variants */
 .primary {
-    background-color: var(--foreground);
-    color: var(--background);
+    background-color: #0f766e;
+    color: #ffffff;
 }
 
 .primary:hover:not(:disabled) {
-    opacity: 0.85;
+    background-color: #115e59;
+    opacity: 1;
 }
 
 .secondary {
