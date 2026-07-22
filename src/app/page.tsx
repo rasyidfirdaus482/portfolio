@@ -4,7 +4,7 @@ import { Card } from "@/components/ui/Card/Card";
 import { Badge } from "@/components/ui/Badge/Badge";
 import { FadeIn } from "@/components/ui/FadeIn/FadeIn";
 import { getAllPostsWithSupabase } from "@/lib/posts";
-import { getResumeUrl } from "@/lib/site-settings";
+import { getResumeUrl, getAboutProfile } from "@/lib/site-settings";
 import { Post } from "@/types/post";
 import Link from "next/link";
 import Image from "next/image";
@@ -23,6 +23,7 @@ export const revalidate = 60; // ISR: revalidate every 60 seconds
 
 export default async function Home() {
   const resumeUrl = await getResumeUrl();
+  const profile = await getAboutProfile();
   const allBlogs = await getAllPostsWithSupabase('blog');
   const recentBlogs = allBlogs.slice(0, 3);
   
@@ -36,7 +37,7 @@ export default async function Home() {
   return (
     <div className={styles.page}>
       <Container>
-        <Hero />
+        <Hero avatarUrl={profile.avatarUrl} />
 
         <section className={styles.section}>
           <FadeIn>

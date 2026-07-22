@@ -16,7 +16,16 @@ const roles = [
     'Infrastructure Engineer',
 ];
 
-export const Hero: React.FC = () => {
+interface HeroProps {
+    avatarUrl?: string;
+    name?: string;
+}
+
+export const Hero: React.FC<HeroProps> = ({ avatarUrl, name }) => {
+    const displayName = name || 'Rasyid Firdaus Harmaini';
+    const imgSrc = avatarUrl || '/avatar.png';
+    const isExternal = imgSrc.startsWith('http');
+
     return (
         <section className={styles.hero}>
             <div className={styles.heroGrid}>
@@ -51,14 +60,24 @@ export const Hero: React.FC = () => {
                 <FadeIn delay={0.25}>
                     <div className={styles.visual}>
                         <div className={styles.portraitFrame}>
-                            <Image
-                                src="/avatar.png"
-                                alt="Rasyid Firdaus Harmaini"
-                                width={360}
-                                height={360}
-                                className={styles.portrait}
-                                priority
-                            />
+                            {isExternal ? (
+                                <img
+                                    src={imgSrc}
+                                    alt={displayName}
+                                    width={360}
+                                    height={360}
+                                    className={styles.portrait}
+                                />
+                            ) : (
+                                <Image
+                                    src={imgSrc}
+                                    alt={displayName}
+                                    width={360}
+                                    height={360}
+                                    className={styles.portrait}
+                                    priority
+                                />
+                            )}
                         </div>
                         <div className={styles.signalPanel}>
                             <span className={styles.signalDot} />
