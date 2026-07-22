@@ -81,7 +81,7 @@ export const Hero: React.FC<HeroProps> = ({ avatarUrl, name }) => {
                         </div>
                         <div className={styles.signalPanel}>
                             <span className={styles.signalDot} />
-                            <span>available for secure web systems</span>
+                            <span>available for Work</span>
                         </div>
                     </div>
                 </FadeIn>

@@ -76,39 +76,16 @@
 .portraitFrame {
     position: relative;
     aspect-ratio: 1;
-    border-radius: 28px;
-    overflow: hidden;
-    border: 1px solid rgba(8, 145, 178, 0.22);
-    background: rgba(8, 145, 178, 0.08);
-    box-shadow: 0 24px 80px rgba(15, 23, 42, 0.12);
-}
-
-.portraitFrame::before {
-    content: '';
-    position: absolute;
-    inset: 14px;
-    border: 1px solid rgba(15, 23, 42, 0.08);
-    border-radius: 20px;
-    z-index: 1;
-    pointer-events: none;
-}
-
-:global(.dark) .portraitFrame {
-    background: rgba(8, 145, 178, 0.12);
-    border-color: rgba(20, 184, 166, 0.22);
-    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.42);
-}
-
-:global(.dark) .portraitFrame::before {
-    border-color: rgba(255, 255, 255, 0.08);
+    overflow: visible;
 }
 
 .portrait {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    object-position: center bottom;
     display: block;
-    filter: saturate(0.92) contrast(1.02);
+    filter: saturate(0.95) contrast(1.02) drop-shadow(0 8px 24px rgba(15, 23, 42, 0.15));
 }
 
 .signalPanel {
