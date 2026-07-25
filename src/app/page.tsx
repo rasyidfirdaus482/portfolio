@@ -31,8 +31,6 @@ export default async function Home() {
   const featuredProjects = [...allProjects]
     .sort((a: Post, b: Post) => Number(Boolean(b.demo || b.github || b.cover_image)) - Number(Boolean(a.demo || a.github || a.cover_image)))
     .slice(0, 3);
-  
-  const certificates = await getAllPostsWithSupabase('certificates');
 
   return (
     <div className={styles.page}>
@@ -99,44 +97,6 @@ export default async function Home() {
             ))}
           </div>
         </section>
-
-        {/* Certificates */}
-        {certificates.length > 0 && (
-          <section className={styles.section}>
-            <FadeIn>
-              <div className={styles.sectionHeader}>
-                <h2 className={styles.sectionTitle}>Certifications</h2>
-              </div>
-            </FadeIn>
-            <div className={styles.certGrid}>
-              {certificates.map((cert: Post, index: number) => (
-                <FadeIn key={cert.slug} delay={index * 0.1}>
-                  <Card className={styles.certCard}>
-                    <div className={styles.certIcon}>
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <circle cx="12" cy="8" r="6"/>
-                        <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>
-                      </svg>
-                    </div>
-                    <h3 className={styles.certTitle}>{cert.title}</h3>
-                    <p className={styles.certIssuer}>{cert.issuer}</p>
-                    <p className={styles.certDate}>{cert.date}</p>
-                    {cert.credential_url && (
-                      <a
-                        href={cert.credential_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className={styles.certLink}
-                      >
-                        View Credential →
-                      </a>
-                    )}
-                  </Card>
-                </FadeIn>
-              ))}
-            </div>
-          </section>
-        )}
 
         <section className={styles.section}>
           <FadeIn>
